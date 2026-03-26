@@ -70,6 +70,7 @@ func _ready() -> void:
 	
 	_init_grid()
 	_create_dots()
+	_rebuild_track_path()
 	_deal_buttons()
 	_create_button_ui()
 	
@@ -232,77 +233,104 @@ func _update_button_states() -> void:
 
 # ============ TRACK & TRAIN ============
 
-func _get_track_rect() -> Rect2:
-	# Track hugs the current dot bounds
-	var left = grid_origin.x + bound_min_col * CELL_SIZE - TRACK_WIDTH / 2
-	var top = grid_origin.y + bound_min_row * CELL_SIZE - TRACK_WIDTH / 2
-	var right = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + TRACK_WIDTH / 2
-	var bottom = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + TRACK_WIDTH / 2
-	return Rect2(left, top, right - left, bottom - top)
+# Track path - array of world positions the train follows
+var track_path: Array = []
+var track_length := 0.0
 
-func _get_track_perimeter() -> float:
-	var rect = _get_track_rect()
-	return 2 * rect.size.x + 2 * rect.size.y
-
-func _get_train_world_pos(t: float) -> Vector2:
-	var rect = _get_track_rect()
-	var perim = _get_track_perimeter()
-	var dist = t * perim
+func _rebuild_track_path() -> void:
+	track_path.clear()
+	track_length = 0.0
 	
-	# Start at bottom-right, go clockwise
+	# Build path clockwise from bottom-right, following edge contours
+	# For each edge, check which cells have dots and route accordingly
+	
+	var offset = TRACK_WIDTH / 2 + CELL_SIZE / 2
+	
 	# Bottom edge (right to left)
-	var bottom_len = rect.size.x
-	if dist < bottom_len:
-		return Vector2(rect.position.x + rect.size.x - dist, rect.position.y + rect.size.y)
-	dist -= bottom_len
+	for col in range(bound_max_col, bound_min_col - 1, -1):
+		var has_dot = grid[bound_max_row][col] != null
+		var y = grid_origin.y + (bound_max_row + 1) * CELL_SIZE
+		if has_dot:
+			y += offset - CELL_SIZE / 2
+		else:
+			y -= CELL_SIZE / 2  # Indent for empty cells
+		track_path.append(Vector2(grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2, y))
 	
 	# Left edge (bottom to top)
-	var left_len = rect.size.y
-	if dist < left_len:
-		return Vector2(rect.position.x, rect.position.y + rect.size.y - dist)
-	dist -= left_len
+	for row in range(bound_max_row, bound_min_row - 1, -1):
+		var has_dot = grid[row][bound_min_col] != null
+		var x = grid_origin.x + bound_min_col * CELL_SIZE
+		if has_dot:
+			x -= offset - CELL_SIZE / 2
+		else:
+			x += CELL_SIZE / 2  # Indent for empty cells
+		track_path.append(Vector2(x, grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2))
 	
 	# Top edge (left to right)
-	var top_len = rect.size.x
-	if dist < top_len:
-		return Vector2(rect.position.x + dist, rect.position.y)
-	dist -= top_len
+	for col in range(bound_min_col, bound_max_col + 1):
+		var has_dot = grid[bound_min_row][col] != null
+		var y = grid_origin.y + bound_min_row * CELL_SIZE
+		if has_dot:
+			y -= offset - CELL_SIZE / 2
+		else:
+			y += CELL_SIZE / 2  # Indent for empty cells
+		track_path.append(Vector2(grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2, y))
 	
-	# Right edge (top to bottom) - back to start
-	return Vector2(rect.position.x + rect.size.x, rect.position.y + dist)
+	# Right edge (top to bottom)
+	for row in range(bound_min_row, bound_max_row + 1):
+		var has_dot = grid[row][bound_max_col] != null
+		var x = grid_origin.x + (bound_max_col + 1) * CELL_SIZE
+		if has_dot:
+			x += offset - CELL_SIZE / 2
+		else:
+			x -= CELL_SIZE / 2  # Indent for empty cells
+		track_path.append(Vector2(x, grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2))
+	
+	# Calculate total length
+	for i in range(track_path.size()):
+		var next_i = (i + 1) % track_path.size()
+		track_length += track_path[i].distance_to(track_path[next_i])
+
+func _get_track_perimeter() -> float:
+	if track_length <= 0:
+		_rebuild_track_path()
+	return track_length
+
+func _get_train_world_pos(t: float) -> Vector2:
+	if track_path.is_empty():
+		_rebuild_track_path()
+	if track_path.is_empty():
+		return Vector2.ZERO
+	
+	var target_dist = t * track_length
+	var current_dist = 0.0
+	
+	for i in range(track_path.size()):
+		var next_i = (i + 1) % track_path.size()
+		var seg_len = track_path[i].distance_to(track_path[next_i])
+		
+		if current_dist + seg_len >= target_dist:
+			var seg_t = (target_dist - current_dist) / seg_len if seg_len > 0 else 0
+			return track_path[i].lerp(track_path[next_i], seg_t)
+		
+		current_dist += seg_len
+	
+	return track_path[0]
 
 func _get_edge_cells_at_position(t: float) -> Array:
 	var cells = []
 	var pos = _get_train_world_pos(t)
-	var rect = _get_track_rect()
-	var perim = _get_track_perimeter()
-	var dist = t * perim
 	
-	var bottom_len = rect.size.x
-	var left_len = rect.size.y
-	var top_len = rect.size.x
+	# Find nearest grid cell
+	var col = int((pos.x - grid_origin.x) / CELL_SIZE)
+	var row = int((pos.y - grid_origin.y) / CELL_SIZE)
 	
-	# Determine which edge and get cells
-	if dist < bottom_len:
-		# Bottom edge - row = bound_max_row
-		var col = int((pos.x - grid_origin.x) / CELL_SIZE)
-		col = clamp(col, bound_min_col, bound_max_col)
-		cells.append(Vector2i(col, bound_max_row))
-	elif dist < bottom_len + left_len:
-		# Left edge - col = bound_min_col
-		var row = int((pos.y - grid_origin.y) / CELL_SIZE)
-		row = clamp(row, bound_min_row, bound_max_row)
-		cells.append(Vector2i(bound_min_col, row))
-	elif dist < bottom_len + left_len + top_len:
-		# Top edge - row = bound_min_row
-		var col = int((pos.x - grid_origin.x) / CELL_SIZE)
-		col = clamp(col, bound_min_col, bound_max_col)
-		cells.append(Vector2i(col, bound_min_row))
-	else:
-		# Right edge - col = bound_max_col
-		var row = int((pos.y - grid_origin.y) / CELL_SIZE)
-		row = clamp(row, bound_min_row, bound_max_row)
-		cells.append(Vector2i(bound_max_col, row))
+	col = clamp(col, bound_min_col, bound_max_col)
+	row = clamp(row, bound_min_row, bound_max_row)
+	
+	# Check if this cell is on the edge
+	if row == bound_min_row or row == bound_max_row or col == bound_min_col or col == bound_max_col:
+		cells.append(Vector2i(col, row))
 	
 	return cells
 
@@ -346,6 +374,9 @@ func _collect_dot(row: int, col: int) -> void:
 		tween.tween_property(dot, "scale", Vector2.ZERO, 0.15)
 		tween.tween_callback(dot.queue_free)
 		dots[row][col] = null
+	
+	# Rebuild track to follow indented path
+	_rebuild_track_path()
 
 func _complete_run() -> void:
 	train_active = false
@@ -391,6 +422,9 @@ func _recalculate_bounds() -> void:
 		bound_max_row = max_r
 		bound_min_col = min_c
 		bound_max_col = max_c
+	
+	# Rebuild track path for new bounds
+	_rebuild_track_path()
 
 func _check_win() -> bool:
 	for row in range(GRID_ROWS):
@@ -453,15 +487,20 @@ func _draw_background() -> void:
 	draw_rect(grid_rect, Color(0.2, 0.2, 0.25))
 
 func _draw_track() -> void:
-	var rect = _get_track_rect()
+	if track_path.is_empty():
+		_rebuild_track_path()
 	
-	# Track outline
 	var track_color = Color(0.4, 0.4, 0.45)
-	draw_rect(rect, track_color, false, 4.0)
+	
+	# Draw track path
+	for i in range(track_path.size()):
+		var next_i = (i + 1) % track_path.size()
+		draw_line(track_path[i], track_path[next_i], track_color, 4.0)
 	
 	# Exit indicator at bottom-right
-	var exit_pos = Vector2(rect.position.x + rect.size.x, rect.position.y + rect.size.y)
-	draw_line(exit_pos, exit_pos + Vector2(30, 30), track_color, 4.0)
+	if not track_path.is_empty():
+		var exit_pos = track_path[0]
+		draw_line(exit_pos, exit_pos + Vector2(30, 30), track_color, 4.0)
 
 func _draw_train() -> void:
 	if not train_active:
