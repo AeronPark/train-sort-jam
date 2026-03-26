@@ -205,31 +205,62 @@ func _create_button_ui() -> void:
 		
 		btn.add_theme_font_size_override("font_size", 28)
 		btn.pressed.connect(_on_button_pressed.bind(i))
-		btn.disabled = train_active
+		btn.disabled = false  # Always enabled - can switch mid-run
+		
+		# Highlight active button
+		if train_active and i == active_button_idx:
+			var active_style = style.duplicate()
+			active_style.border_width_left = 3
+			active_style.border_width_right = 3
+			active_style.border_width_top = 3
+			active_style.border_width_bottom = 3
+			active_style.border_color = Color.WHITE
+			btn.add_theme_stylebox_override("normal", active_style)
 		
 		add_child(btn)
 		button_nodes.append(btn)
 
 func _on_button_pressed(idx: int) -> void:
-	if train_active or buttons[idx] == null:
+	if buttons[idx] == null:
 		return
 	
 	var btn = buttons[idx]
-	active_button_idx = idx
-	train_color = btn.color
-	train_remaining = btn.count
-	train_collected = 0
-	train_position = 0.0
-	train_active = true
-	train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)  # Engine + wagons for capacity
 	
-	_update_button_states()
-	print("Train departing: %s x%d" % [train_color, train_remaining])
+	# If train already active, switch color mid-run
+	if train_active:
+		# First, update the previous button with remaining capacity
+		if active_button_idx >= 0 and active_button_idx != idx:
+			var prev_btn = buttons[active_button_idx]
+			if prev_btn:
+				prev_btn.count -= train_collected
+				if prev_btn.count <= 0:
+					buttons[active_button_idx] = _make_random_button()
+		
+		# Switch to new color - keep train moving
+		active_button_idx = idx
+		train_color = btn.color
+		train_remaining = btn.count
+		train_collected = 0
+		train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)
+		print("Switching to: %s x%d" % [train_color, train_remaining])
+	else:
+		# Start new train run
+		active_button_idx = idx
+		train_color = btn.color
+		train_remaining = btn.count
+		train_collected = 0
+		train_position = 0.0
+		train_active = true
+		train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)
+		print("Train departing: %s x%d" % [train_color, train_remaining])
+	
+	_create_button_ui()  # Refresh button states
 
 func _update_button_states() -> void:
+	# Buttons always enabled - can switch mid-run
 	for i in range(button_nodes.size()):
 		if button_nodes[i]:
-			button_nodes[i].disabled = train_active
+			button_nodes[i].disabled = false
 
 # ============ TRACK & TRAIN ============
 
@@ -379,17 +410,17 @@ func _collect_dot(row: int, col: int) -> void:
 	_rebuild_track_path()
 
 func _complete_run() -> void:
-	train_active = false
+	# Update button for collected dots
+	if active_button_idx >= 0:
+		var btn = buttons[active_button_idx]
+		if btn:
+			btn.count -= train_collected
+			if btn.count <= 0:
+				buttons[active_button_idx] = _make_random_button()
+	
+	# Keep train running continuously - reset position for next loop
 	train_position = 0.0
-	
-	# Update button
-	var picked = train_collected
-	var btn = buttons[active_button_idx]
-	btn.count -= picked
-	
-	if btn.count <= 0:
-		# Discard and deal new
-		buttons[active_button_idx] = _make_random_button()
+	train_collected = 0
 	
 	# Recalculate bounds
 	_recalculate_bounds()
@@ -399,9 +430,15 @@ func _complete_run() -> void:
 	
 	# Check win/lose
 	if _check_win():
+		train_active = false
 		print("YOU WIN!")
 	elif _check_lose():
+		train_active = false
 		print("GAME OVER!")
+	else:
+		# Update remaining from current button
+		if active_button_idx >= 0 and buttons[active_button_idx]:
+			train_remaining = buttons[active_button_idx].count
 
 func _recalculate_bounds() -> void:
 	var min_r = GRID_ROWS
