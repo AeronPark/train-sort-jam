@@ -38,6 +38,13 @@ var train_remaining := 0  # How many more to pick up
 var train_collected := 0
 var active_button_idx := -1
 
+# Train visual - multiple cars
+const TRAIN_CAR_LENGTH := 24
+const TRAIN_CAR_WIDTH := 14
+const TRAIN_CAR_GAP := 4
+const MAX_TRAIN_CARS := 6
+var train_car_count := 3  # Engine + wagons
+
 # Button inventory - 3x3 grid
 var buttons: Array = []  # Array of {color, count} or null
 const BUTTON_ROWS := 3
@@ -213,6 +220,7 @@ func _on_button_pressed(idx: int) -> void:
 	train_collected = 0
 	train_position = 0.0
 	train_active = true
+	train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)  # Engine + wagons for capacity
 	
 	_update_button_states()
 	print("Train departing: %s x%d" % [train_color, train_remaining])
@@ -459,13 +467,62 @@ func _draw_train() -> void:
 	if not train_active:
 		return
 	
-	var pos = _get_train_world_pos(train_position)
+	var perim = _get_track_perimeter()
+	var car_spacing = (TRAIN_CAR_LENGTH + TRAIN_CAR_GAP) / perim
 	
-	# Train body
-	draw_circle(pos, 12, Color.WHITE)
-	draw_circle(pos, 8, COLOR_VALUES.get(train_color, Color.GRAY))
+	# Draw each car from back to front
+	for i in range(train_car_count - 1, -1, -1):
+		var car_t = train_position - (i * car_spacing)
+		if car_t < 0:
+			car_t += 1.0  # Wrap around
+		
+		var pos = _get_train_world_pos(car_t)
+		var next_t = car_t + 0.01
+		if next_t > 1.0:
+			next_t -= 1.0
+		var next_pos = _get_train_world_pos(next_t)
+		var direction = (next_pos - pos).normalized()
+		var angle = direction.angle()
+		
+		_draw_train_car(pos, angle, i == 0)
+
+func _draw_train_car(pos: Vector2, angle: float, is_engine: bool) -> void:
+	var half_len = TRAIN_CAR_LENGTH / 2.0
+	var half_wid = TRAIN_CAR_WIDTH / 2.0
 	
-	# Remaining count
-	var font = ThemeDB.fallback_font
-	var text = str(train_remaining)
-	draw_string(font, pos + Vector2(-5, 5), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 14, Color.WHITE)
+	# Car body color
+	var body_color = Color(0.85, 0.85, 0.85) if is_engine else Color(0.75, 0.75, 0.75)
+	var outline_color = Color(0.4, 0.4, 0.4)
+	
+	# Calculate corners
+	var dir = Vector2.from_angle(angle)
+	var perp = Vector2.from_angle(angle + PI / 2)
+	
+	var corners = [
+		pos + dir * half_len + perp * half_wid,
+		pos + dir * half_len - perp * half_wid,
+		pos - dir * half_len - perp * half_wid,
+		pos - dir * half_len + perp * half_wid
+	]
+	
+	# Draw car body
+	draw_colored_polygon(corners, body_color)
+	
+	# Draw outline
+	for j in range(4):
+		draw_line(corners[j], corners[(j + 1) % 4], outline_color, 2.0)
+	
+	# Engine details
+	if is_engine:
+		# Cab window
+		var window_color = Color(0.3, 0.5, 0.7)
+		var win_offset = dir * (half_len * 0.3)
+		draw_circle(pos + win_offset, 4, window_color)
+		
+		# Smokestack
+		var stack_pos = pos + dir * (half_len * 0.7)
+		draw_rect(Rect2(stack_pos - Vector2(3, 6), Vector2(6, 6)), Color(0.3, 0.3, 0.3))
+	else:
+		# Wagon - show collected dot color
+		var wagon_color = COLOR_VALUES.get(train_color, Color.GRAY)
+		draw_circle(pos, 5, wagon_color)
