@@ -205,62 +205,31 @@ func _create_button_ui() -> void:
 		
 		btn.add_theme_font_size_override("font_size", 28)
 		btn.pressed.connect(_on_button_pressed.bind(i))
-		btn.disabled = false  # Always enabled - can switch mid-run
-		
-		# Highlight active button
-		if train_active and i == active_button_idx:
-			var active_style = style.duplicate()
-			active_style.border_width_left = 3
-			active_style.border_width_right = 3
-			active_style.border_width_top = 3
-			active_style.border_width_bottom = 3
-			active_style.border_color = Color.WHITE
-			btn.add_theme_stylebox_override("normal", active_style)
+		btn.disabled = train_active  # Disable while train is moving
 		
 		add_child(btn)
 		button_nodes.append(btn)
 
 func _on_button_pressed(idx: int) -> void:
-	if buttons[idx] == null:
+	if train_active or buttons[idx] == null:
 		return
 	
 	var btn = buttons[idx]
+	active_button_idx = idx
+	train_color = btn.color
+	train_remaining = btn.count
+	train_collected = 0
+	train_position = 0.0
+	train_active = true
+	train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)
 	
-	# If train already active, switch color mid-run
-	if train_active:
-		# First, update the previous button with remaining capacity
-		if active_button_idx >= 0 and active_button_idx != idx:
-			var prev_btn = buttons[active_button_idx]
-			if prev_btn:
-				prev_btn.count -= train_collected
-				if prev_btn.count <= 0:
-					buttons[active_button_idx] = _make_random_button()
-		
-		# Switch to new color - keep train moving
-		active_button_idx = idx
-		train_color = btn.color
-		train_remaining = btn.count
-		train_collected = 0
-		train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)
-		print("Switching to: %s x%d" % [train_color, train_remaining])
-	else:
-		# Start new train run
-		active_button_idx = idx
-		train_color = btn.color
-		train_remaining = btn.count
-		train_collected = 0
-		train_position = 0.0
-		train_active = true
-		train_car_count = min(btn.count + 1, MAX_TRAIN_CARS)
-		print("Train departing: %s x%d" % [train_color, train_remaining])
-	
-	_create_button_ui()  # Refresh button states
+	_create_button_ui()
+	print("Train departing: %s x%d" % [train_color, train_remaining])
 
 func _update_button_states() -> void:
-	# Buttons always enabled - can switch mid-run
 	for i in range(button_nodes.size()):
 		if button_nodes[i]:
-			button_nodes[i].disabled = false
+			button_nodes[i].disabled = train_active
 
 # ============ TRACK & TRAIN ============
 
@@ -272,50 +241,78 @@ func _rebuild_track_path() -> void:
 	track_path.clear()
 	track_length = 0.0
 	
-	# Build path clockwise from bottom-right, following edge contours
-	# For each edge, check which cells have dots and route accordingly
+	# Build path clockwise from bottom-right
+	# Path goes around the OUTERMOST dots only
+	# When a cell is empty, the path indents inward
 	
-	var offset = TRACK_WIDTH / 2 + CELL_SIZE / 2
+	var margin = TRACK_WIDTH / 2 + 2
 	
 	# Bottom edge (right to left)
-	for col in range(bound_max_col, bound_min_col - 1, -1):
-		var has_dot = grid[bound_max_row][col] != null
-		var y = grid_origin.y + (bound_max_row + 1) * CELL_SIZE
-		if has_dot:
-			y += offset - CELL_SIZE / 2
+	var col = bound_max_col
+	while col >= bound_min_col:
+		var cell_x = grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2
+		var cell_y = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
+		
+		# Check if this cell has a dot
+		if grid[bound_max_row][col] != null:
+			# Dot present - path goes outside
+			track_path.append(Vector2(cell_x, cell_y))
 		else:
-			y -= CELL_SIZE / 2  # Indent for empty cells
-		track_path.append(Vector2(grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2, y))
+			# Empty - path indents around it
+			# Go up, across, down
+			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y))
+			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y - CELL_SIZE))
+			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y - CELL_SIZE))
+			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y))
+		col -= 1
 	
 	# Left edge (bottom to top)
-	for row in range(bound_max_row, bound_min_row - 1, -1):
-		var has_dot = grid[row][bound_min_col] != null
-		var x = grid_origin.x + bound_min_col * CELL_SIZE
-		if has_dot:
-			x -= offset - CELL_SIZE / 2
+	var row = bound_max_row
+	while row >= bound_min_row:
+		var cell_x = grid_origin.x + bound_min_col * CELL_SIZE - margin
+		var cell_y = grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2
+		
+		if grid[row][bound_min_col] != null:
+			track_path.append(Vector2(cell_x, cell_y))
 		else:
-			x += CELL_SIZE / 2  # Indent for empty cells
-		track_path.append(Vector2(x, grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2))
+			# Indent right
+			track_path.append(Vector2(cell_x, cell_y + CELL_SIZE/2))
+			track_path.append(Vector2(cell_x + CELL_SIZE, cell_y + CELL_SIZE/2))
+			track_path.append(Vector2(cell_x + CELL_SIZE, cell_y - CELL_SIZE/2))
+			track_path.append(Vector2(cell_x, cell_y - CELL_SIZE/2))
+		row -= 1
 	
 	# Top edge (left to right)
-	for col in range(bound_min_col, bound_max_col + 1):
-		var has_dot = grid[bound_min_row][col] != null
-		var y = grid_origin.y + bound_min_row * CELL_SIZE
-		if has_dot:
-			y -= offset - CELL_SIZE / 2
+	col = bound_min_col
+	while col <= bound_max_col:
+		var cell_x = grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2
+		var cell_y = grid_origin.y + bound_min_row * CELL_SIZE - margin
+		
+		if grid[bound_min_row][col] != null:
+			track_path.append(Vector2(cell_x, cell_y))
 		else:
-			y += CELL_SIZE / 2  # Indent for empty cells
-		track_path.append(Vector2(grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2, y))
+			# Indent down
+			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y))
+			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y + CELL_SIZE))
+			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y + CELL_SIZE))
+			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y))
+		col += 1
 	
 	# Right edge (top to bottom)
-	for row in range(bound_min_row, bound_max_row + 1):
-		var has_dot = grid[row][bound_max_col] != null
-		var x = grid_origin.x + (bound_max_col + 1) * CELL_SIZE
-		if has_dot:
-			x += offset - CELL_SIZE / 2
+	row = bound_min_row
+	while row <= bound_max_row:
+		var cell_x = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
+		var cell_y = grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2
+		
+		if grid[row][bound_max_col] != null:
+			track_path.append(Vector2(cell_x, cell_y))
 		else:
-			x -= CELL_SIZE / 2  # Indent for empty cells
-		track_path.append(Vector2(x, grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2))
+			# Indent left
+			track_path.append(Vector2(cell_x, cell_y - CELL_SIZE/2))
+			track_path.append(Vector2(cell_x - CELL_SIZE, cell_y - CELL_SIZE/2))
+			track_path.append(Vector2(cell_x - CELL_SIZE, cell_y + CELL_SIZE/2))
+			track_path.append(Vector2(cell_x, cell_y + CELL_SIZE/2))
+		row += 1
 	
 	# Calculate total length
 	for i in range(track_path.size()):
@@ -410,6 +407,10 @@ func _collect_dot(row: int, col: int) -> void:
 	_rebuild_track_path()
 
 func _complete_run() -> void:
+	# Stop the train after one pass
+	train_active = false
+	train_position = 0.0
+	
 	# Update button for collected dots
 	if active_button_idx >= 0:
 		var btn = buttons[active_button_idx]
@@ -418,11 +419,10 @@ func _complete_run() -> void:
 			if btn.count <= 0:
 				buttons[active_button_idx] = _make_random_button()
 	
-	# Keep train running continuously - reset position for next loop
-	train_position = 0.0
+	active_button_idx = -1
 	train_collected = 0
 	
-	# Recalculate bounds
+	# Recalculate bounds to shrink path
 	_recalculate_bounds()
 	
 	# Update UI
@@ -430,15 +430,9 @@ func _complete_run() -> void:
 	
 	# Check win/lose
 	if _check_win():
-		train_active = false
 		print("YOU WIN!")
 	elif _check_lose():
-		train_active = false
 		print("GAME OVER!")
-	else:
-		# Update remaining from current button
-		if active_button_idx >= 0 and buttons[active_button_idx]:
-			train_remaining = buttons[active_button_idx].count
 
 func _recalculate_bounds() -> void:
 	var min_r = GRID_ROWS
