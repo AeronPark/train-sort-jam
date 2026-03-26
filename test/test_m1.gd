@@ -1,7 +1,7 @@
 extends SceneTree
 ## Test harness for M1: Grid & Path with moving train
 
-var _scene: Node2D
+var _scene: Node
 var _frame: int = 0
 
 func _initialize() -> void:
@@ -17,8 +17,8 @@ func _initialize() -> void:
 func _process(_delta: float) -> bool:
 	_frame += 1
 	
-	# Get train reference to verify it's moving
-	var train_follow: PathFollow2D = _scene.get_node_or_null("Board/ConveyorPath/TrainFollow")
+	# Get train reference - path changed with new hierarchy
+	var train_follow: PathFollow2D = _scene.get_node_or_null("GameContainer/BoardPanel/Board/ConveyorPath/TrainFollow")
 	if train_follow:
 		var progress: float = train_follow.progress_ratio
 		if _frame == 10:
@@ -30,5 +30,4 @@ func _process(_delta: float) -> bool:
 			else:
 				print("ASSERT FAIL: Train not moving as expected")
 	
-	# Let it run for 100 frames (10 seconds at 10fps)
 	return false

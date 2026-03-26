@@ -1,849 +1,2323 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/conveyor_path.gd" id="1_0wfyh"]
-[ext_resource type="Script" path="res://scripts/train.gd" id="2_sugp2"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_tbgi4"]
+[ext_resource type="Script" path="res://scripts/passenger.gd" id="2_tefeu"]
+[ext_resource type="Script" path="res://scripts/conveyor_path.gd" id="3_o6xl0"]
+[ext_resource type="Script" path="res://scripts/train.gd" id="4_tipki"]
+[ext_resource type="Script" path="res://scripts/wagon.gd" id="5_85g3d"]
 
-[sub_resource type="Curve2D" id="Curve2D_jyhfs"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_choun"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ya4ey"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eb6dy"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trceg"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a8y0u"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jkv2x"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jbj1t"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_muem4"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dp3eg"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0ld40"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gqmmt"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yc10j"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jscy8"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pm3ni"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y6deb"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_og1vs"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2wyq8"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vxglm"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2f3dj"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yq6so"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fv21b"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tel4y"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qkpxi"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5q0nq"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dgi5k"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j8jky"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kmb1v"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fuf3a"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pibwh"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c6pm6"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5he1u"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5poiv"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2cjbq"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_chjal"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cjqg0"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vchkt"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_txyw0"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vc5cj"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nvyfr"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ty1g6"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j2jfr"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bjg73"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bu4jf"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_o7ddy"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0loja"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ids8r"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dnhof"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1v6qk"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_augu2"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tm6hj"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kf5aa"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t5ykj"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e755i"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ro3en"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_od4ux"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xhfw6"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1epgm"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_152kg"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r4e17"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y57op"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mlv25"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a82wo"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gdvew"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kjtvk"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xrs0c"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xljpf"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j4bwh"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ksmap"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ygd8o"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2s0kr"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xaipn"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ndrjj"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ih3m7"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_11yus"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_b6ruc"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_155or"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vtx2l"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_63lxy"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fjhjs"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bfu41"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_r4ag1"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v0wtd"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sgvw8"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6nfnn"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4ue30"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_k42av"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gr8w0"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_673bd"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_akjxb"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vrx01"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1uevf"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tc087"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_73205"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0tljd"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mgpkq"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xmrkg"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wvlrk"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_engxj"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_raiwf"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_roort"]
+radius = 20.0
+
+[sub_resource type="Curve2D" id="Curve2D_gm02q"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 32, 32, 0, 0, 0, 0, 608, 32, 0, 0, 0, 0, 608, 608, 0, 0, 0, 0, 32, 608, 0, 0, 0, 0, 32, 32)
+"points": PackedVector2Array(0, 0, 0, 0, 28, 28, 0, 0, 0, 0, 532, 28, 0, 0, 0, 0, 532, 532, 0, 0, 0, 0, 28, 532, 0, 0, 0, 0, 28, 28)
 }
 point_count = 5
 
-[node name="Main" type="Node2D" unique_id=1583867814]
+[node name="Main" type="Node2D" unique_id=956939305]
+script = ExtResource("1_tbgi4")
 
-[node name="Background" type="ColorRect" parent="." unique_id=353040095]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Background" type="ColorRect" parent="." unique_id=154776518]
 offset_right = 1280.0
 offset_bottom = 720.0
-color = Color(0.2, 0.2, 0.25, 1)
+color = Color(0.22, 0.22, 0.27, 1)
 
-[node name="Board" type="Node2D" parent="." unique_id=1199379489]
-position = Vector2(140, 60)
+[node name="BoardBg" type="ColorRect" parent="." unique_id=948094526]
+offset_left = 150.0
+offset_top = 80.0
+offset_right = 710.0
+offset_bottom = 640.0
+color = Color(0.45, 0.52, 0.32, 1)
 
-[node name="Grid" type="Node2D" parent="Board" unique_id=1143643397]
+[node name="Grid" type="Node2D" parent="." unique_id=31619163]
+position = Vector2(150, 80)
 
-[node name="Cell_0_0" type="ColorRect" parent="Board/Grid" unique_id=1028396747]
+[node name="Cell_0_0" type="ColorRect" parent="Grid" unique_id=1391657576]
 offset_left = 2.0
 offset_top = 2.0
-offset_right = 62.0
-offset_bottom = 62.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 54.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_0" type="ColorRect" parent="Board/Grid" unique_id=1038549487]
-offset_left = 66.0
+[node name="Passenger_0_0" type="Area2D" parent="Grid" unique_id=1498588861]
+position = Vector2(28, 28)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_0" unique_id=1669917017]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_0" unique_id=811672107]
+shape = SubResource("CircleShape2D_choun")
+
+[node name="Cell_1_0" type="ColorRect" parent="Grid" unique_id=1662121486]
+offset_left = 58.0
 offset_top = 2.0
-offset_right = 126.0
-offset_bottom = 62.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 110.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_2_0" type="ColorRect" parent="Board/Grid" unique_id=35470837]
-offset_left = 130.0
+[node name="Passenger_1_0" type="Area2D" parent="Grid" unique_id=1908821352]
+position = Vector2(84, 28)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_0" unique_id=2010194909]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_0" unique_id=1643722025]
+shape = SubResource("CircleShape2D_ya4ey")
+
+[node name="Cell_2_0" type="ColorRect" parent="Grid" unique_id=1687485964]
+offset_left = 114.0
 offset_top = 2.0
-offset_right = 190.0
-offset_bottom = 62.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 166.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_3_0" type="ColorRect" parent="Board/Grid" unique_id=2126380857]
-offset_left = 194.0
+[node name="Passenger_2_0" type="Area2D" parent="Grid" unique_id=1356337611]
+position = Vector2(140, 28)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_0" unique_id=1707459481]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_0" unique_id=307621469]
+shape = SubResource("CircleShape2D_eb6dy")
+
+[node name="Cell_3_0" type="ColorRect" parent="Grid" unique_id=515080576]
+offset_left = 170.0
 offset_top = 2.0
-offset_right = 254.0
-offset_bottom = 62.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 222.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_4_0" type="ColorRect" parent="Board/Grid" unique_id=722745711]
-offset_left = 258.0
+[node name="Passenger_3_0" type="Area2D" parent="Grid" unique_id=1967273102]
+position = Vector2(196, 28)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_0" unique_id=1461051642]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_0" unique_id=1491004530]
+shape = SubResource("CircleShape2D_trceg")
+
+[node name="Cell_4_0" type="ColorRect" parent="Grid" unique_id=1054212682]
+offset_left = 226.0
 offset_top = 2.0
-offset_right = 318.0
-offset_bottom = 62.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 278.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_0" type="ColorRect" parent="Board/Grid" unique_id=623751623]
-offset_left = 322.0
+[node name="Passenger_4_0" type="Area2D" parent="Grid" unique_id=1459674737]
+position = Vector2(252, 28)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_0" unique_id=2032276388]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_0" unique_id=1387087239]
+shape = SubResource("CircleShape2D_a8y0u")
+
+[node name="Cell_5_0" type="ColorRect" parent="Grid" unique_id=674451015]
+offset_left = 282.0
 offset_top = 2.0
-offset_right = 382.0
-offset_bottom = 62.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 334.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_6_0" type="ColorRect" parent="Board/Grid" unique_id=510364330]
-offset_left = 386.0
+[node name="Passenger_5_0" type="Area2D" parent="Grid" unique_id=1925530476]
+position = Vector2(308, 28)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_0" unique_id=966443022]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_0" unique_id=538432639]
+shape = SubResource("CircleShape2D_jkv2x")
+
+[node name="Cell_6_0" type="ColorRect" parent="Grid" unique_id=1306836940]
+offset_left = 338.0
+offset_top = 2.0
+offset_right = 390.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_0" type="Area2D" parent="Grid" unique_id=1224249412]
+position = Vector2(364, 28)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_0" unique_id=826544355]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_0" unique_id=63656464]
+shape = SubResource("CircleShape2D_jbj1t")
+
+[node name="Cell_7_0" type="ColorRect" parent="Grid" unique_id=1540776367]
+offset_left = 394.0
 offset_top = 2.0
 offset_right = 446.0
-offset_bottom = 62.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_0" type="ColorRect" parent="Board/Grid" unique_id=315284461]
+[node name="Passenger_7_0" type="Area2D" parent="Grid" unique_id=67243496]
+position = Vector2(420, 28)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_0" unique_id=119510151]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_0" unique_id=1401077322]
+shape = SubResource("CircleShape2D_muem4")
+
+[node name="Cell_8_0" type="ColorRect" parent="Grid" unique_id=11463435]
 offset_left = 450.0
 offset_top = 2.0
-offset_right = 510.0
-offset_bottom = 62.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 502.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_0" type="ColorRect" parent="Board/Grid" unique_id=1343353259]
-offset_left = 514.0
+[node name="Passenger_8_0" type="Area2D" parent="Grid" unique_id=482540485]
+position = Vector2(476, 28)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_0" unique_id=840808931]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_0" unique_id=796431677]
+shape = SubResource("CircleShape2D_dp3eg")
+
+[node name="Cell_9_0" type="ColorRect" parent="Grid" unique_id=53709526]
+offset_left = 506.0
 offset_top = 2.0
-offset_right = 574.0
-offset_bottom = 62.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 558.0
+offset_bottom = 54.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_9_0" type="ColorRect" parent="Board/Grid" unique_id=1671245848]
-offset_left = 578.0
-offset_top = 2.0
-offset_right = 638.0
-offset_bottom = 62.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_9_0" type="Area2D" parent="Grid" unique_id=446356585]
+position = Vector2(532, 28)
+script = ExtResource("2_tefeu")
+color_index = 1
 
-[node name="Cell_0_1" type="ColorRect" parent="Board/Grid" unique_id=957490268]
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_0" unique_id=1454238093]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_0" unique_id=424755305]
+shape = SubResource("CircleShape2D_0ld40")
+
+[node name="Cell_0_1" type="ColorRect" parent="Grid" unique_id=1124554426]
 offset_left = 2.0
-offset_top = 66.0
-offset_right = 62.0
-offset_bottom = 126.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_top = 58.0
+offset_right = 54.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_1" type="ColorRect" parent="Board/Grid" unique_id=31497161]
-offset_left = 66.0
-offset_top = 66.0
-offset_right = 126.0
-offset_bottom = 126.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_0_1" type="Area2D" parent="Grid" unique_id=1803723331]
+position = Vector2(28, 84)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_2_1" type="ColorRect" parent="Board/Grid" unique_id=2024147399]
-offset_left = 130.0
-offset_top = 66.0
-offset_right = 190.0
-offset_bottom = 126.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_1" unique_id=1389123684]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_1" type="ColorRect" parent="Board/Grid" unique_id=1504612072]
-offset_left = 194.0
-offset_top = 66.0
-offset_right = 254.0
-offset_bottom = 126.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_1" unique_id=1297276689]
+shape = SubResource("CircleShape2D_gqmmt")
 
-[node name="Cell_4_1" type="ColorRect" parent="Board/Grid" unique_id=759765086]
-offset_left = 258.0
-offset_top = 66.0
-offset_right = 318.0
-offset_bottom = 126.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Cell_1_1" type="ColorRect" parent="Grid" unique_id=53039183]
+offset_left = 58.0
+offset_top = 58.0
+offset_right = 110.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_1" type="ColorRect" parent="Board/Grid" unique_id=1626657610]
-offset_left = 322.0
-offset_top = 66.0
-offset_right = 382.0
-offset_bottom = 126.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_1_1" type="Area2D" parent="Grid" unique_id=1253474699]
+position = Vector2(84, 84)
+script = ExtResource("2_tefeu")
 
-[node name="Cell_6_1" type="ColorRect" parent="Board/Grid" unique_id=1669677583]
-offset_left = 386.0
-offset_top = 66.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_1" unique_id=522749628]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_1" unique_id=2042101518]
+shape = SubResource("CircleShape2D_yc10j")
+
+[node name="Cell_2_1" type="ColorRect" parent="Grid" unique_id=2067712131]
+offset_left = 114.0
+offset_top = 58.0
+offset_right = 166.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_1" type="Area2D" parent="Grid" unique_id=571978807]
+position = Vector2(140, 84)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_1" unique_id=7631549]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_1" unique_id=1412999645]
+shape = SubResource("CircleShape2D_jscy8")
+
+[node name="Cell_3_1" type="ColorRect" parent="Grid" unique_id=1135839009]
+offset_left = 170.0
+offset_top = 58.0
+offset_right = 222.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_1" type="Area2D" parent="Grid" unique_id=1315075307]
+position = Vector2(196, 84)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_1" unique_id=143703819]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_1" unique_id=1279262511]
+shape = SubResource("CircleShape2D_pm3ni")
+
+[node name="Cell_4_1" type="ColorRect" parent="Grid" unique_id=1467903437]
+offset_left = 226.0
+offset_top = 58.0
+offset_right = 278.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_1" type="Area2D" parent="Grid" unique_id=1044732305]
+position = Vector2(252, 84)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_1" unique_id=359201041]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_1" unique_id=1353966813]
+shape = SubResource("CircleShape2D_y6deb")
+
+[node name="Cell_5_1" type="ColorRect" parent="Grid" unique_id=585038495]
+offset_left = 282.0
+offset_top = 58.0
+offset_right = 334.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_1" type="Area2D" parent="Grid" unique_id=1585410790]
+position = Vector2(308, 84)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_1" unique_id=1208207673]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_1" unique_id=1968046889]
+shape = SubResource("CircleShape2D_og1vs")
+
+[node name="Cell_6_1" type="ColorRect" parent="Grid" unique_id=838191586]
+offset_left = 338.0
+offset_top = 58.0
+offset_right = 390.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_1" type="Area2D" parent="Grid" unique_id=2035019749]
+position = Vector2(364, 84)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_1" unique_id=1599226569]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_1" unique_id=1460364505]
+shape = SubResource("CircleShape2D_2wyq8")
+
+[node name="Cell_7_1" type="ColorRect" parent="Grid" unique_id=345848653]
+offset_left = 394.0
+offset_top = 58.0
 offset_right = 446.0
-offset_bottom = 126.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_1" type="ColorRect" parent="Board/Grid" unique_id=1875335099]
+[node name="Passenger_7_1" type="Area2D" parent="Grid" unique_id=1859870970]
+position = Vector2(420, 84)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_1" unique_id=554234313]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_1" unique_id=1549883412]
+shape = SubResource("CircleShape2D_vxglm")
+
+[node name="Cell_8_1" type="ColorRect" parent="Grid" unique_id=1168105642]
 offset_left = 450.0
-offset_top = 66.0
-offset_right = 510.0
-offset_bottom = 126.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 58.0
+offset_right = 502.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_1" type="ColorRect" parent="Board/Grid" unique_id=901534453]
-offset_left = 514.0
-offset_top = 66.0
-offset_right = 574.0
-offset_bottom = 126.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_8_1" type="Area2D" parent="Grid" unique_id=1666061984]
+position = Vector2(476, 84)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_9_1" type="ColorRect" parent="Board/Grid" unique_id=768858466]
-offset_left = 578.0
-offset_top = 66.0
-offset_right = 638.0
-offset_bottom = 126.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_1" unique_id=1107726427]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_0_2" type="ColorRect" parent="Board/Grid" unique_id=2133039219]
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_1" unique_id=116791566]
+shape = SubResource("CircleShape2D_2f3dj")
+
+[node name="Cell_9_1" type="ColorRect" parent="Grid" unique_id=53223727]
+offset_left = 506.0
+offset_top = 58.0
+offset_right = 558.0
+offset_bottom = 110.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_9_1" type="Area2D" parent="Grid" unique_id=942042880]
+position = Vector2(532, 84)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_1" unique_id=2062749702]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_1" unique_id=1237936872]
+shape = SubResource("CircleShape2D_yq6so")
+
+[node name="Cell_0_2" type="ColorRect" parent="Grid" unique_id=1496880791]
 offset_left = 2.0
-offset_top = 130.0
-offset_right = 62.0
-offset_bottom = 190.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 114.0
+offset_right = 54.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_2" type="ColorRect" parent="Board/Grid" unique_id=508298474]
-offset_left = 66.0
-offset_top = 130.0
-offset_right = 126.0
-offset_bottom = 190.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_0_2" type="Area2D" parent="Grid" unique_id=1243078678]
+position = Vector2(28, 140)
+script = ExtResource("2_tefeu")
+color_index = 2
 
-[node name="Cell_2_2" type="ColorRect" parent="Board/Grid" unique_id=492295369]
-offset_left = 130.0
-offset_top = 130.0
-offset_right = 190.0
-offset_bottom = 190.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_2" unique_id=1654630036]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_2" type="ColorRect" parent="Board/Grid" unique_id=447856145]
-offset_left = 194.0
-offset_top = 130.0
-offset_right = 254.0
-offset_bottom = 190.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_2" unique_id=1289807607]
+shape = SubResource("CircleShape2D_fv21b")
 
-[node name="Cell_4_2" type="ColorRect" parent="Board/Grid" unique_id=1166446861]
-offset_left = 258.0
-offset_top = 130.0
-offset_right = 318.0
-offset_bottom = 190.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Cell_1_2" type="ColorRect" parent="Grid" unique_id=1326800773]
+offset_left = 58.0
+offset_top = 114.0
+offset_right = 110.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_2" type="ColorRect" parent="Board/Grid" unique_id=1794734037]
-offset_left = 322.0
-offset_top = 130.0
-offset_right = 382.0
-offset_bottom = 190.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_1_2" type="Area2D" parent="Grid" unique_id=1098315843]
+position = Vector2(84, 140)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_6_2" type="ColorRect" parent="Board/Grid" unique_id=1737794976]
-offset_left = 386.0
-offset_top = 130.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_2" unique_id=2136055634]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_2" unique_id=2139208148]
+shape = SubResource("CircleShape2D_tel4y")
+
+[node name="Cell_2_2" type="ColorRect" parent="Grid" unique_id=1569480193]
+offset_left = 114.0
+offset_top = 114.0
+offset_right = 166.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_2" type="Area2D" parent="Grid" unique_id=368395139]
+position = Vector2(140, 140)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_2" unique_id=803451262]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_2" unique_id=530678769]
+shape = SubResource("CircleShape2D_qkpxi")
+
+[node name="Cell_3_2" type="ColorRect" parent="Grid" unique_id=1871801632]
+offset_left = 170.0
+offset_top = 114.0
+offset_right = 222.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_2" type="Area2D" parent="Grid" unique_id=1587519320]
+position = Vector2(196, 140)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_2" unique_id=137101151]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_2" unique_id=842249982]
+shape = SubResource("CircleShape2D_5q0nq")
+
+[node name="Cell_4_2" type="ColorRect" parent="Grid" unique_id=1522700815]
+offset_left = 226.0
+offset_top = 114.0
+offset_right = 278.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_2" type="Area2D" parent="Grid" unique_id=228865094]
+position = Vector2(252, 140)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_2" unique_id=355116905]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_2" unique_id=694645229]
+shape = SubResource("CircleShape2D_dgi5k")
+
+[node name="Cell_5_2" type="ColorRect" parent="Grid" unique_id=187763715]
+offset_left = 282.0
+offset_top = 114.0
+offset_right = 334.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_2" type="Area2D" parent="Grid" unique_id=531694533]
+position = Vector2(308, 140)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_2" unique_id=2101425382]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_2" unique_id=439675437]
+shape = SubResource("CircleShape2D_j8jky")
+
+[node name="Cell_6_2" type="ColorRect" parent="Grid" unique_id=1958629814]
+offset_left = 338.0
+offset_top = 114.0
+offset_right = 390.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_2" type="Area2D" parent="Grid" unique_id=817943388]
+position = Vector2(364, 140)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_2" unique_id=1223390572]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_2" unique_id=1094732810]
+shape = SubResource("CircleShape2D_kmb1v")
+
+[node name="Cell_7_2" type="ColorRect" parent="Grid" unique_id=1867291108]
+offset_left = 394.0
+offset_top = 114.0
 offset_right = 446.0
-offset_bottom = 190.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_2" type="ColorRect" parent="Board/Grid" unique_id=565377768]
+[node name="Passenger_7_2" type="Area2D" parent="Grid" unique_id=837861353]
+position = Vector2(420, 140)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_2" unique_id=732893610]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_2" unique_id=999483522]
+shape = SubResource("CircleShape2D_fuf3a")
+
+[node name="Cell_8_2" type="ColorRect" parent="Grid" unique_id=1440091280]
 offset_left = 450.0
-offset_top = 130.0
-offset_right = 510.0
-offset_bottom = 190.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_top = 114.0
+offset_right = 502.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_2" type="ColorRect" parent="Board/Grid" unique_id=1829281336]
-offset_left = 514.0
-offset_top = 130.0
-offset_right = 574.0
-offset_bottom = 190.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_8_2" type="Area2D" parent="Grid" unique_id=873900120]
+position = Vector2(476, 140)
+script = ExtResource("2_tefeu")
+color_index = 2
 
-[node name="Cell_9_2" type="ColorRect" parent="Board/Grid" unique_id=202376956]
-offset_left = 578.0
-offset_top = 130.0
-offset_right = 638.0
-offset_bottom = 190.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_2" unique_id=1446504226]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_0_3" type="ColorRect" parent="Board/Grid" unique_id=723295360]
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_2" unique_id=1534122115]
+shape = SubResource("CircleShape2D_pibwh")
+
+[node name="Cell_9_2" type="ColorRect" parent="Grid" unique_id=1704956722]
+offset_left = 506.0
+offset_top = 114.0
+offset_right = 558.0
+offset_bottom = 166.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_9_2" type="Area2D" parent="Grid" unique_id=942751900]
+position = Vector2(532, 140)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_2" unique_id=524991710]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_2" unique_id=1766749465]
+shape = SubResource("CircleShape2D_c6pm6")
+
+[node name="Cell_0_3" type="ColorRect" parent="Grid" unique_id=1488538688]
 offset_left = 2.0
-offset_top = 194.0
-offset_right = 62.0
-offset_bottom = 254.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_top = 170.0
+offset_right = 54.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_3" type="ColorRect" parent="Board/Grid" unique_id=456236765]
-offset_left = 66.0
-offset_top = 194.0
-offset_right = 126.0
-offset_bottom = 254.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_0_3" type="Area2D" parent="Grid" unique_id=1336029784]
+position = Vector2(28, 196)
+script = ExtResource("2_tefeu")
+color_index = 1
 
-[node name="Cell_2_3" type="ColorRect" parent="Board/Grid" unique_id=1030289156]
-offset_left = 130.0
-offset_top = 194.0
-offset_right = 190.0
-offset_bottom = 254.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_3" unique_id=1273272775]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_3" type="ColorRect" parent="Board/Grid" unique_id=412188135]
-offset_left = 194.0
-offset_top = 194.0
-offset_right = 254.0
-offset_bottom = 254.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_3" unique_id=2072289214]
+shape = SubResource("CircleShape2D_5he1u")
 
-[node name="Cell_4_3" type="ColorRect" parent="Board/Grid" unique_id=1711773857]
-offset_left = 258.0
-offset_top = 194.0
-offset_right = 318.0
-offset_bottom = 254.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Cell_1_3" type="ColorRect" parent="Grid" unique_id=1517332965]
+offset_left = 58.0
+offset_top = 170.0
+offset_right = 110.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_3" type="ColorRect" parent="Board/Grid" unique_id=528453884]
-offset_left = 322.0
-offset_top = 194.0
-offset_right = 382.0
-offset_bottom = 254.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_1_3" type="Area2D" parent="Grid" unique_id=1174281073]
+position = Vector2(84, 196)
+script = ExtResource("2_tefeu")
+color_index = 2
 
-[node name="Cell_6_3" type="ColorRect" parent="Board/Grid" unique_id=2000664664]
-offset_left = 386.0
-offset_top = 194.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_3" unique_id=1026859046]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_3" unique_id=1614944468]
+shape = SubResource("CircleShape2D_5poiv")
+
+[node name="Cell_2_3" type="ColorRect" parent="Grid" unique_id=1064567661]
+offset_left = 114.0
+offset_top = 170.0
+offset_right = 166.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_3" type="Area2D" parent="Grid" unique_id=1877485043]
+position = Vector2(140, 196)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_3" unique_id=1644898662]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_3" unique_id=2114626291]
+shape = SubResource("CircleShape2D_2cjbq")
+
+[node name="Cell_3_3" type="ColorRect" parent="Grid" unique_id=1133214669]
+offset_left = 170.0
+offset_top = 170.0
+offset_right = 222.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_3" type="Area2D" parent="Grid" unique_id=2121857327]
+position = Vector2(196, 196)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_3" unique_id=412300749]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_3" unique_id=1664064890]
+shape = SubResource("CircleShape2D_chjal")
+
+[node name="Cell_4_3" type="ColorRect" parent="Grid" unique_id=61346378]
+offset_left = 226.0
+offset_top = 170.0
+offset_right = 278.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_3" type="Area2D" parent="Grid" unique_id=1181623744]
+position = Vector2(252, 196)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_3" unique_id=688988563]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_3" unique_id=2036698449]
+shape = SubResource("CircleShape2D_cjqg0")
+
+[node name="Cell_5_3" type="ColorRect" parent="Grid" unique_id=1462582383]
+offset_left = 282.0
+offset_top = 170.0
+offset_right = 334.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_3" type="Area2D" parent="Grid" unique_id=359705954]
+position = Vector2(308, 196)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_3" unique_id=1086726409]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_3" unique_id=1119141521]
+shape = SubResource("CircleShape2D_vchkt")
+
+[node name="Cell_6_3" type="ColorRect" parent="Grid" unique_id=880578051]
+offset_left = 338.0
+offset_top = 170.0
+offset_right = 390.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_3" type="Area2D" parent="Grid" unique_id=195843530]
+position = Vector2(364, 196)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_3" unique_id=1620085865]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_3" unique_id=996689446]
+shape = SubResource("CircleShape2D_txyw0")
+
+[node name="Cell_7_3" type="ColorRect" parent="Grid" unique_id=2089451675]
+offset_left = 394.0
+offset_top = 170.0
 offset_right = 446.0
-offset_bottom = 254.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_3" type="ColorRect" parent="Board/Grid" unique_id=966802743]
+[node name="Passenger_7_3" type="Area2D" parent="Grid" unique_id=692894677]
+position = Vector2(420, 196)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_3" unique_id=190440075]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_3" unique_id=1714987670]
+shape = SubResource("CircleShape2D_vc5cj")
+
+[node name="Cell_8_3" type="ColorRect" parent="Grid" unique_id=383696284]
 offset_left = 450.0
-offset_top = 194.0
-offset_right = 510.0
-offset_bottom = 254.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 170.0
+offset_right = 502.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_3" type="ColorRect" parent="Board/Grid" unique_id=94522038]
-offset_left = 514.0
-offset_top = 194.0
-offset_right = 574.0
-offset_bottom = 254.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_8_3" type="Area2D" parent="Grid" unique_id=1035935450]
+position = Vector2(476, 196)
+script = ExtResource("2_tefeu")
+color_index = 1
 
-[node name="Cell_9_3" type="ColorRect" parent="Board/Grid" unique_id=346086456]
-offset_left = 578.0
-offset_top = 194.0
-offset_right = 638.0
-offset_bottom = 254.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_3" unique_id=690954265]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_0_4" type="ColorRect" parent="Board/Grid" unique_id=274182]
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_3" unique_id=529982525]
+shape = SubResource("CircleShape2D_nvyfr")
+
+[node name="Cell_9_3" type="ColorRect" parent="Grid" unique_id=766241582]
+offset_left = 506.0
+offset_top = 170.0
+offset_right = 558.0
+offset_bottom = 222.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_9_3" type="Area2D" parent="Grid" unique_id=357487576]
+position = Vector2(532, 196)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_3" unique_id=1931356893]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_3" unique_id=143320404]
+shape = SubResource("CircleShape2D_ty1g6")
+
+[node name="Cell_0_4" type="ColorRect" parent="Grid" unique_id=45118772]
 offset_left = 2.0
-offset_top = 258.0
-offset_right = 62.0
-offset_bottom = 318.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 226.0
+offset_right = 54.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_4" type="ColorRect" parent="Board/Grid" unique_id=138705903]
-offset_left = 66.0
-offset_top = 258.0
-offset_right = 126.0
-offset_bottom = 318.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_0_4" type="Area2D" parent="Grid" unique_id=1710005916]
+position = Vector2(28, 252)
+script = ExtResource("2_tefeu")
 
-[node name="Cell_2_4" type="ColorRect" parent="Board/Grid" unique_id=1193343387]
-offset_left = 130.0
-offset_top = 258.0
-offset_right = 190.0
-offset_bottom = 318.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_4" unique_id=981621288]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_4" type="ColorRect" parent="Board/Grid" unique_id=1005188567]
-offset_left = 194.0
-offset_top = 258.0
-offset_right = 254.0
-offset_bottom = 318.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_4" unique_id=501214193]
+shape = SubResource("CircleShape2D_j2jfr")
 
-[node name="Cell_4_4" type="ColorRect" parent="Board/Grid" unique_id=1574262849]
-offset_left = 258.0
-offset_top = 258.0
-offset_right = 318.0
-offset_bottom = 318.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Cell_1_4" type="ColorRect" parent="Grid" unique_id=534529736]
+offset_left = 58.0
+offset_top = 226.0
+offset_right = 110.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_4" type="ColorRect" parent="Board/Grid" unique_id=261144394]
-offset_left = 322.0
-offset_top = 258.0
-offset_right = 382.0
-offset_bottom = 318.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_1_4" type="Area2D" parent="Grid" unique_id=115398679]
+position = Vector2(84, 252)
+script = ExtResource("2_tefeu")
+color_index = 1
 
-[node name="Cell_6_4" type="ColorRect" parent="Board/Grid" unique_id=847267383]
-offset_left = 386.0
-offset_top = 258.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_4" unique_id=1839476028]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_4" unique_id=685672872]
+shape = SubResource("CircleShape2D_bjg73")
+
+[node name="Cell_2_4" type="ColorRect" parent="Grid" unique_id=52043921]
+offset_left = 114.0
+offset_top = 226.0
+offset_right = 166.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_4" type="Area2D" parent="Grid" unique_id=1995491528]
+position = Vector2(140, 252)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_4" unique_id=1352397838]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_4" unique_id=1292449888]
+shape = SubResource("CircleShape2D_bu4jf")
+
+[node name="Cell_3_4" type="ColorRect" parent="Grid" unique_id=91275578]
+offset_left = 170.0
+offset_top = 226.0
+offset_right = 222.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_4" type="Area2D" parent="Grid" unique_id=341770757]
+position = Vector2(196, 252)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_4" unique_id=1120618289]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_4" unique_id=839049372]
+shape = SubResource("CircleShape2D_o7ddy")
+
+[node name="Cell_4_4" type="ColorRect" parent="Grid" unique_id=1729056856]
+offset_left = 226.0
+offset_top = 226.0
+offset_right = 278.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_4" type="Area2D" parent="Grid" unique_id=1817364746]
+position = Vector2(252, 252)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_4" unique_id=145078761]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_4" unique_id=566535595]
+shape = SubResource("CircleShape2D_0loja")
+
+[node name="Cell_5_4" type="ColorRect" parent="Grid" unique_id=1196274935]
+offset_left = 282.0
+offset_top = 226.0
+offset_right = 334.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_4" type="Area2D" parent="Grid" unique_id=416634591]
+position = Vector2(308, 252)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_4" unique_id=301746901]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_4" unique_id=531601773]
+shape = SubResource("CircleShape2D_ids8r")
+
+[node name="Cell_6_4" type="ColorRect" parent="Grid" unique_id=726836678]
+offset_left = 338.0
+offset_top = 226.0
+offset_right = 390.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_4" type="Area2D" parent="Grid" unique_id=1966374557]
+position = Vector2(364, 252)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_4" unique_id=1513907227]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_4" unique_id=1905960200]
+shape = SubResource("CircleShape2D_dnhof")
+
+[node name="Cell_7_4" type="ColorRect" parent="Grid" unique_id=305326765]
+offset_left = 394.0
+offset_top = 226.0
 offset_right = 446.0
-offset_bottom = 318.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_4" type="ColorRect" parent="Board/Grid" unique_id=241448684]
+[node name="Passenger_7_4" type="Area2D" parent="Grid" unique_id=442840921]
+position = Vector2(420, 252)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_4" unique_id=1208407879]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_4" unique_id=1247798304]
+shape = SubResource("CircleShape2D_1v6qk")
+
+[node name="Cell_8_4" type="ColorRect" parent="Grid" unique_id=644538544]
 offset_left = 450.0
-offset_top = 258.0
-offset_right = 510.0
-offset_bottom = 318.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_top = 226.0
+offset_right = 502.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_4" type="ColorRect" parent="Board/Grid" unique_id=1242973109]
-offset_left = 514.0
-offset_top = 258.0
-offset_right = 574.0
-offset_bottom = 318.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_8_4" type="Area2D" parent="Grid" unique_id=1662776192]
+position = Vector2(476, 252)
+script = ExtResource("2_tefeu")
 
-[node name="Cell_9_4" type="ColorRect" parent="Board/Grid" unique_id=1863436994]
-offset_left = 578.0
-offset_top = 258.0
-offset_right = 638.0
-offset_bottom = 318.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_4" unique_id=270362231]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_0_5" type="ColorRect" parent="Board/Grid" unique_id=1474839930]
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_4" unique_id=775316356]
+shape = SubResource("CircleShape2D_augu2")
+
+[node name="Cell_9_4" type="ColorRect" parent="Grid" unique_id=602498397]
+offset_left = 506.0
+offset_top = 226.0
+offset_right = 558.0
+offset_bottom = 278.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_9_4" type="Area2D" parent="Grid" unique_id=579531706]
+position = Vector2(532, 252)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_4" unique_id=1206399371]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_4" unique_id=138409382]
+shape = SubResource("CircleShape2D_tm6hj")
+
+[node name="Cell_0_5" type="ColorRect" parent="Grid" unique_id=630679851]
 offset_left = 2.0
-offset_top = 322.0
-offset_right = 62.0
-offset_bottom = 382.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_top = 282.0
+offset_right = 54.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_5" type="ColorRect" parent="Board/Grid" unique_id=792645388]
-offset_left = 66.0
-offset_top = 322.0
-offset_right = 126.0
-offset_bottom = 382.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_0_5" type="Area2D" parent="Grid" unique_id=1919407126]
+position = Vector2(28, 308)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_2_5" type="ColorRect" parent="Board/Grid" unique_id=1563512771]
-offset_left = 130.0
-offset_top = 322.0
-offset_right = 190.0
-offset_bottom = 382.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_5" unique_id=54901172]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_5" type="ColorRect" parent="Board/Grid" unique_id=910021572]
-offset_left = 194.0
-offset_top = 322.0
-offset_right = 254.0
-offset_bottom = 382.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_5" unique_id=1381162458]
+shape = SubResource("CircleShape2D_kf5aa")
 
-[node name="Cell_4_5" type="ColorRect" parent="Board/Grid" unique_id=1230902613]
-offset_left = 258.0
-offset_top = 322.0
-offset_right = 318.0
-offset_bottom = 382.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Cell_1_5" type="ColorRect" parent="Grid" unique_id=667865875]
+offset_left = 58.0
+offset_top = 282.0
+offset_right = 110.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_5" type="ColorRect" parent="Board/Grid" unique_id=1673617691]
-offset_left = 322.0
-offset_top = 322.0
-offset_right = 382.0
-offset_bottom = 382.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_1_5" type="Area2D" parent="Grid" unique_id=1908229691]
+position = Vector2(84, 308)
+script = ExtResource("2_tefeu")
 
-[node name="Cell_6_5" type="ColorRect" parent="Board/Grid" unique_id=725548646]
-offset_left = 386.0
-offset_top = 322.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_5" unique_id=492626404]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_5" unique_id=16399985]
+shape = SubResource("CircleShape2D_t5ykj")
+
+[node name="Cell_2_5" type="ColorRect" parent="Grid" unique_id=949073205]
+offset_left = 114.0
+offset_top = 282.0
+offset_right = 166.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_5" type="Area2D" parent="Grid" unique_id=1282099123]
+position = Vector2(140, 308)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_5" unique_id=1679183505]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_5" unique_id=688177430]
+shape = SubResource("CircleShape2D_e755i")
+
+[node name="Cell_3_5" type="ColorRect" parent="Grid" unique_id=1045381290]
+offset_left = 170.0
+offset_top = 282.0
+offset_right = 222.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_5" type="Area2D" parent="Grid" unique_id=339371019]
+position = Vector2(196, 308)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_5" unique_id=373043453]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_5" unique_id=140068853]
+shape = SubResource("CircleShape2D_ro3en")
+
+[node name="Cell_4_5" type="ColorRect" parent="Grid" unique_id=1069484357]
+offset_left = 226.0
+offset_top = 282.0
+offset_right = 278.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_5" type="Area2D" parent="Grid" unique_id=5652922]
+position = Vector2(252, 308)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_5" unique_id=1412714976]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_5" unique_id=529795629]
+shape = SubResource("CircleShape2D_od4ux")
+
+[node name="Cell_5_5" type="ColorRect" parent="Grid" unique_id=1973770544]
+offset_left = 282.0
+offset_top = 282.0
+offset_right = 334.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_5" type="Area2D" parent="Grid" unique_id=1107654594]
+position = Vector2(308, 308)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_5" unique_id=1967242585]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_5" unique_id=1369225488]
+shape = SubResource("CircleShape2D_xhfw6")
+
+[node name="Cell_6_5" type="ColorRect" parent="Grid" unique_id=1603560258]
+offset_left = 338.0
+offset_top = 282.0
+offset_right = 390.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_5" type="Area2D" parent="Grid" unique_id=504448329]
+position = Vector2(364, 308)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_5" unique_id=1849500998]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_5" unique_id=1357091802]
+shape = SubResource("CircleShape2D_1epgm")
+
+[node name="Cell_7_5" type="ColorRect" parent="Grid" unique_id=4670664]
+offset_left = 394.0
+offset_top = 282.0
 offset_right = 446.0
-offset_bottom = 382.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_5" type="ColorRect" parent="Board/Grid" unique_id=187379143]
+[node name="Passenger_7_5" type="Area2D" parent="Grid" unique_id=416679043]
+position = Vector2(420, 308)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_5" unique_id=705529013]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_5" unique_id=769146464]
+shape = SubResource("CircleShape2D_152kg")
+
+[node name="Cell_8_5" type="ColorRect" parent="Grid" unique_id=182665039]
 offset_left = 450.0
-offset_top = 322.0
-offset_right = 510.0
-offset_bottom = 382.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 282.0
+offset_right = 502.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_5" type="ColorRect" parent="Board/Grid" unique_id=837114933]
-offset_left = 514.0
-offset_top = 322.0
-offset_right = 574.0
-offset_bottom = 382.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_8_5" type="Area2D" parent="Grid" unique_id=768476804]
+position = Vector2(476, 308)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_9_5" type="ColorRect" parent="Board/Grid" unique_id=452767285]
-offset_left = 578.0
-offset_top = 322.0
-offset_right = 638.0
-offset_bottom = 382.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_5" unique_id=2147096334]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_0_6" type="ColorRect" parent="Board/Grid" unique_id=1410270130]
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_5" unique_id=1641575291]
+shape = SubResource("CircleShape2D_r4e17")
+
+[node name="Cell_9_5" type="ColorRect" parent="Grid" unique_id=1402702459]
+offset_left = 506.0
+offset_top = 282.0
+offset_right = 558.0
+offset_bottom = 334.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_9_5" type="Area2D" parent="Grid" unique_id=1293569230]
+position = Vector2(532, 308)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_5" unique_id=459692819]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_5" unique_id=1296972591]
+shape = SubResource("CircleShape2D_y57op")
+
+[node name="Cell_0_6" type="ColorRect" parent="Grid" unique_id=1162348447]
 offset_left = 2.0
-offset_top = 386.0
-offset_right = 62.0
-offset_bottom = 446.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 338.0
+offset_right = 54.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_6" type="ColorRect" parent="Board/Grid" unique_id=1223653453]
-offset_left = 66.0
-offset_top = 386.0
-offset_right = 126.0
-offset_bottom = 446.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_0_6" type="Area2D" parent="Grid" unique_id=1779539277]
+position = Vector2(28, 364)
+script = ExtResource("2_tefeu")
+color_index = 2
 
-[node name="Cell_2_6" type="ColorRect" parent="Board/Grid" unique_id=898775241]
-offset_left = 130.0
-offset_top = 386.0
-offset_right = 190.0
-offset_bottom = 446.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_6" unique_id=254103090]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_6" type="ColorRect" parent="Board/Grid" unique_id=1370758976]
-offset_left = 194.0
-offset_top = 386.0
-offset_right = 254.0
-offset_bottom = 446.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_6" unique_id=2057619671]
+shape = SubResource("CircleShape2D_mlv25")
 
-[node name="Cell_4_6" type="ColorRect" parent="Board/Grid" unique_id=1295272816]
-offset_left = 258.0
-offset_top = 386.0
-offset_right = 318.0
-offset_bottom = 446.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Cell_1_6" type="ColorRect" parent="Grid" unique_id=655914027]
+offset_left = 58.0
+offset_top = 338.0
+offset_right = 110.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_6" type="ColorRect" parent="Board/Grid" unique_id=1488359778]
-offset_left = 322.0
-offset_top = 386.0
-offset_right = 382.0
-offset_bottom = 446.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_1_6" type="Area2D" parent="Grid" unique_id=783752758]
+position = Vector2(84, 364)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_6_6" type="ColorRect" parent="Board/Grid" unique_id=637797435]
-offset_left = 386.0
-offset_top = 386.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_6" unique_id=1727051458]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_6" unique_id=93997159]
+shape = SubResource("CircleShape2D_a82wo")
+
+[node name="Cell_2_6" type="ColorRect" parent="Grid" unique_id=1189757388]
+offset_left = 114.0
+offset_top = 338.0
+offset_right = 166.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_6" type="Area2D" parent="Grid" unique_id=769386561]
+position = Vector2(140, 364)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_6" unique_id=787793384]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_6" unique_id=156522701]
+shape = SubResource("CircleShape2D_gdvew")
+
+[node name="Cell_3_6" type="ColorRect" parent="Grid" unique_id=230603348]
+offset_left = 170.0
+offset_top = 338.0
+offset_right = 222.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_6" type="Area2D" parent="Grid" unique_id=1827796701]
+position = Vector2(196, 364)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_6" unique_id=38929890]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_6" unique_id=1991872172]
+shape = SubResource("CircleShape2D_kjtvk")
+
+[node name="Cell_4_6" type="ColorRect" parent="Grid" unique_id=341345191]
+offset_left = 226.0
+offset_top = 338.0
+offset_right = 278.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_6" type="Area2D" parent="Grid" unique_id=834169528]
+position = Vector2(252, 364)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_6" unique_id=1997327297]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_6" unique_id=1089509524]
+shape = SubResource("CircleShape2D_xrs0c")
+
+[node name="Cell_5_6" type="ColorRect" parent="Grid" unique_id=1099809701]
+offset_left = 282.0
+offset_top = 338.0
+offset_right = 334.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_6" type="Area2D" parent="Grid" unique_id=305245334]
+position = Vector2(308, 364)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_6" unique_id=529526209]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_6" unique_id=791639760]
+shape = SubResource("CircleShape2D_xljpf")
+
+[node name="Cell_6_6" type="ColorRect" parent="Grid" unique_id=2087930578]
+offset_left = 338.0
+offset_top = 338.0
+offset_right = 390.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_6" type="Area2D" parent="Grid" unique_id=1251785374]
+position = Vector2(364, 364)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_6" unique_id=1696804942]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_6" unique_id=650001060]
+shape = SubResource("CircleShape2D_j4bwh")
+
+[node name="Cell_7_6" type="ColorRect" parent="Grid" unique_id=864579375]
+offset_left = 394.0
+offset_top = 338.0
+offset_right = 446.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_7_6" type="Area2D" parent="Grid" unique_id=1912958644]
+position = Vector2(420, 364)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_6" unique_id=456171085]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_6" unique_id=716542083]
+shape = SubResource("CircleShape2D_ksmap")
+
+[node name="Cell_8_6" type="ColorRect" parent="Grid" unique_id=1617743990]
+offset_left = 450.0
+offset_top = 338.0
+offset_right = 502.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_8_6" type="Area2D" parent="Grid" unique_id=1161843875]
+position = Vector2(476, 364)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_6" unique_id=438015088]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_6" unique_id=722101705]
+shape = SubResource("CircleShape2D_ygd8o")
+
+[node name="Cell_9_6" type="ColorRect" parent="Grid" unique_id=1822646995]
+offset_left = 506.0
+offset_top = 338.0
+offset_right = 558.0
+offset_bottom = 390.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_9_6" type="Area2D" parent="Grid" unique_id=1558914481]
+position = Vector2(532, 364)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_6" unique_id=1966379985]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_6" unique_id=1915809943]
+shape = SubResource("CircleShape2D_2s0kr")
+
+[node name="Cell_0_7" type="ColorRect" parent="Grid" unique_id=186485350]
+offset_left = 2.0
+offset_top = 394.0
+offset_right = 54.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_0_7" type="Area2D" parent="Grid" unique_id=800350087]
+position = Vector2(28, 420)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_7" unique_id=749517983]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_7" unique_id=616592120]
+shape = SubResource("CircleShape2D_xaipn")
+
+[node name="Cell_1_7" type="ColorRect" parent="Grid" unique_id=1964495163]
+offset_left = 58.0
+offset_top = 394.0
+offset_right = 110.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_1_7" type="Area2D" parent="Grid" unique_id=1165678564]
+position = Vector2(84, 420)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_7" unique_id=1588881766]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_7" unique_id=435804971]
+shape = SubResource("CircleShape2D_ndrjj")
+
+[node name="Cell_2_7" type="ColorRect" parent="Grid" unique_id=1618466683]
+offset_left = 114.0
+offset_top = 394.0
+offset_right = 166.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_7" type="Area2D" parent="Grid" unique_id=1514082220]
+position = Vector2(140, 420)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_7" unique_id=2089127203]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_7" unique_id=337772351]
+shape = SubResource("CircleShape2D_ih3m7")
+
+[node name="Cell_3_7" type="ColorRect" parent="Grid" unique_id=1955287532]
+offset_left = 170.0
+offset_top = 394.0
+offset_right = 222.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_7" type="Area2D" parent="Grid" unique_id=473764652]
+position = Vector2(196, 420)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_7" unique_id=1427945400]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_7" unique_id=285512897]
+shape = SubResource("CircleShape2D_11yus")
+
+[node name="Cell_4_7" type="ColorRect" parent="Grid" unique_id=215691694]
+offset_left = 226.0
+offset_top = 394.0
+offset_right = 278.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_7" type="Area2D" parent="Grid" unique_id=747567979]
+position = Vector2(252, 420)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_7" unique_id=988833449]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_7" unique_id=1254628651]
+shape = SubResource("CircleShape2D_b6ruc")
+
+[node name="Cell_5_7" type="ColorRect" parent="Grid" unique_id=717472553]
+offset_left = 282.0
+offset_top = 394.0
+offset_right = 334.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_7" type="Area2D" parent="Grid" unique_id=915054792]
+position = Vector2(308, 420)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_7" unique_id=1285574711]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_7" unique_id=1012592058]
+shape = SubResource("CircleShape2D_155or")
+
+[node name="Cell_6_7" type="ColorRect" parent="Grid" unique_id=244820556]
+offset_left = 338.0
+offset_top = 394.0
+offset_right = 390.0
+offset_bottom = 446.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_7" type="Area2D" parent="Grid" unique_id=857609909]
+position = Vector2(364, 420)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_7" unique_id=312408638]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_7" unique_id=190301703]
+shape = SubResource("CircleShape2D_vtx2l")
+
+[node name="Cell_7_7" type="ColorRect" parent="Grid" unique_id=1207526777]
+offset_left = 394.0
+offset_top = 394.0
 offset_right = 446.0
 offset_bottom = 446.0
-color = Color(0.3, 0.5, 0.3, 1)
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_6" type="ColorRect" parent="Board/Grid" unique_id=1688820131]
+[node name="Passenger_7_7" type="Area2D" parent="Grid" unique_id=388243903]
+position = Vector2(420, 420)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_7" unique_id=802080986]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_7" unique_id=722705543]
+shape = SubResource("CircleShape2D_63lxy")
+
+[node name="Cell_8_7" type="ColorRect" parent="Grid" unique_id=1867044461]
 offset_left = 450.0
-offset_top = 386.0
-offset_right = 510.0
+offset_top = 394.0
+offset_right = 502.0
 offset_bottom = 446.0
-color = Color(0.35, 0.55, 0.35, 1)
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_6" type="ColorRect" parent="Board/Grid" unique_id=1493278478]
-offset_left = 514.0
-offset_top = 386.0
-offset_right = 574.0
+[node name="Passenger_8_7" type="Area2D" parent="Grid" unique_id=549890780]
+position = Vector2(476, 420)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_7" unique_id=2094701078]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_7" unique_id=2137396028]
+shape = SubResource("CircleShape2D_fjhjs")
+
+[node name="Cell_9_7" type="ColorRect" parent="Grid" unique_id=1903655468]
+offset_left = 506.0
+offset_top = 394.0
+offset_right = 558.0
 offset_bottom = 446.0
-color = Color(0.3, 0.5, 0.3, 1)
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_9_6" type="ColorRect" parent="Board/Grid" unique_id=789312237]
-offset_left = 578.0
-offset_top = 386.0
-offset_right = 638.0
-offset_bottom = 446.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_9_7" type="Area2D" parent="Grid" unique_id=663127858]
+position = Vector2(532, 420)
+script = ExtResource("2_tefeu")
+color_index = 2
 
-[node name="Cell_0_7" type="ColorRect" parent="Board/Grid" unique_id=185539950]
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_7" unique_id=1162504258]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_7" unique_id=583492677]
+shape = SubResource("CircleShape2D_bfu41")
+
+[node name="Cell_0_8" type="ColorRect" parent="Grid" unique_id=1073733760]
 offset_left = 2.0
 offset_top = 450.0
-offset_right = 62.0
-offset_bottom = 510.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 54.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_7" type="ColorRect" parent="Board/Grid" unique_id=504124244]
-offset_left = 66.0
+[node name="Passenger_0_8" type="Area2D" parent="Grid" unique_id=1650510180]
+position = Vector2(28, 476)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_8" unique_id=46722779]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_8" unique_id=1384764571]
+shape = SubResource("CircleShape2D_r4ag1")
+
+[node name="Cell_1_8" type="ColorRect" parent="Grid" unique_id=1583716580]
+offset_left = 58.0
 offset_top = 450.0
-offset_right = 126.0
-offset_bottom = 510.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 110.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_2_7" type="ColorRect" parent="Board/Grid" unique_id=2126901882]
-offset_left = 130.0
+[node name="Passenger_1_8" type="Area2D" parent="Grid" unique_id=1625460813]
+position = Vector2(84, 476)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_8" unique_id=1117796126]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_8" unique_id=764414600]
+shape = SubResource("CircleShape2D_v0wtd")
+
+[node name="Cell_2_8" type="ColorRect" parent="Grid" unique_id=1247126887]
+offset_left = 114.0
 offset_top = 450.0
-offset_right = 190.0
-offset_bottom = 510.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 166.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_3_7" type="ColorRect" parent="Board/Grid" unique_id=2119928884]
-offset_left = 194.0
+[node name="Passenger_2_8" type="Area2D" parent="Grid" unique_id=2029184505]
+position = Vector2(140, 476)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_8" unique_id=1947369851]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_8" unique_id=1566454581]
+shape = SubResource("CircleShape2D_sgvw8")
+
+[node name="Cell_3_8" type="ColorRect" parent="Grid" unique_id=549844096]
+offset_left = 170.0
 offset_top = 450.0
-offset_right = 254.0
-offset_bottom = 510.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 222.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_4_7" type="ColorRect" parent="Board/Grid" unique_id=487212725]
-offset_left = 258.0
+[node name="Passenger_3_8" type="Area2D" parent="Grid" unique_id=175119344]
+position = Vector2(196, 476)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_8" unique_id=2126678203]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_8" unique_id=1066436392]
+shape = SubResource("CircleShape2D_6nfnn")
+
+[node name="Cell_4_8" type="ColorRect" parent="Grid" unique_id=1803389531]
+offset_left = 226.0
 offset_top = 450.0
-offset_right = 318.0
-offset_bottom = 510.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 278.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_7" type="ColorRect" parent="Board/Grid" unique_id=1661111283]
-offset_left = 322.0
+[node name="Passenger_4_8" type="Area2D" parent="Grid" unique_id=830068884]
+position = Vector2(252, 476)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_8" unique_id=1510586065]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_8" unique_id=1708907804]
+shape = SubResource("CircleShape2D_4ue30")
+
+[node name="Cell_5_8" type="ColorRect" parent="Grid" unique_id=109853885]
+offset_left = 282.0
 offset_top = 450.0
-offset_right = 382.0
-offset_bottom = 510.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 334.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_6_7" type="ColorRect" parent="Board/Grid" unique_id=505887367]
-offset_left = 386.0
+[node name="Passenger_5_8" type="Area2D" parent="Grid" unique_id=1712369773]
+position = Vector2(308, 476)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_8" unique_id=1081679869]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_8" unique_id=802821186]
+shape = SubResource("CircleShape2D_k42av")
+
+[node name="Cell_6_8" type="ColorRect" parent="Grid" unique_id=1242243980]
+offset_left = 338.0
+offset_top = 450.0
+offset_right = 390.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_8" type="Area2D" parent="Grid" unique_id=69058058]
+position = Vector2(364, 476)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_8" unique_id=2000644520]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_8" unique_id=1339388050]
+shape = SubResource("CircleShape2D_gr8w0")
+
+[node name="Cell_7_8" type="ColorRect" parent="Grid" unique_id=81000762]
+offset_left = 394.0
 offset_top = 450.0
 offset_right = 446.0
-offset_bottom = 510.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_7" type="ColorRect" parent="Board/Grid" unique_id=1278363138]
+[node name="Passenger_7_8" type="Area2D" parent="Grid" unique_id=1167376730]
+position = Vector2(420, 476)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_8" unique_id=641662465]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_8" unique_id=648393441]
+shape = SubResource("CircleShape2D_673bd")
+
+[node name="Cell_8_8" type="ColorRect" parent="Grid" unique_id=1920021975]
 offset_left = 450.0
 offset_top = 450.0
-offset_right = 510.0
-offset_bottom = 510.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_right = 502.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_7" type="ColorRect" parent="Board/Grid" unique_id=1615098086]
-offset_left = 514.0
+[node name="Passenger_8_8" type="Area2D" parent="Grid" unique_id=1251422230]
+position = Vector2(476, 476)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_8" unique_id=1680058004]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_8" unique_id=926603817]
+shape = SubResource("CircleShape2D_akjxb")
+
+[node name="Cell_9_8" type="ColorRect" parent="Grid" unique_id=991821925]
+offset_left = 506.0
 offset_top = 450.0
-offset_right = 574.0
-offset_bottom = 510.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_right = 558.0
+offset_bottom = 502.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_9_7" type="ColorRect" parent="Board/Grid" unique_id=1790322700]
-offset_left = 578.0
-offset_top = 450.0
-offset_right = 638.0
-offset_bottom = 510.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_9_8" type="Area2D" parent="Grid" unique_id=71267143]
+position = Vector2(532, 476)
+script = ExtResource("2_tefeu")
+color_index = 1
 
-[node name="Cell_0_8" type="ColorRect" parent="Board/Grid" unique_id=1113058599]
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_8" unique_id=1639045484]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_8" unique_id=1696443093]
+shape = SubResource("CircleShape2D_vrx01")
+
+[node name="Cell_0_9" type="ColorRect" parent="Grid" unique_id=1926857358]
 offset_left = 2.0
-offset_top = 514.0
-offset_right = 62.0
-offset_bottom = 574.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_top = 506.0
+offset_right = 54.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_1_8" type="ColorRect" parent="Board/Grid" unique_id=1388396530]
-offset_left = 66.0
-offset_top = 514.0
-offset_right = 126.0
-offset_bottom = 574.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_0_9" type="Area2D" parent="Grid" unique_id=2137667851]
+position = Vector2(28, 532)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_2_8" type="ColorRect" parent="Board/Grid" unique_id=1772291541]
-offset_left = 130.0
-offset_top = 514.0
-offset_right = 190.0
-offset_bottom = 574.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_0_9" unique_id=585483513]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_3_8" type="ColorRect" parent="Board/Grid" unique_id=486715731]
-offset_left = 194.0
-offset_top = 514.0
-offset_right = 254.0
-offset_bottom = 574.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_0_9" unique_id=393832910]
+shape = SubResource("CircleShape2D_1uevf")
 
-[node name="Cell_4_8" type="ColorRect" parent="Board/Grid" unique_id=593194772]
-offset_left = 258.0
-offset_top = 514.0
-offset_right = 318.0
-offset_bottom = 574.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Cell_1_9" type="ColorRect" parent="Grid" unique_id=1741662728]
+offset_left = 58.0
+offset_top = 506.0
+offset_right = 110.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_5_8" type="ColorRect" parent="Board/Grid" unique_id=1846128345]
-offset_left = 322.0
-offset_top = 514.0
-offset_right = 382.0
-offset_bottom = 574.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_1_9" type="Area2D" parent="Grid" unique_id=1418259484]
+position = Vector2(84, 532)
+script = ExtResource("2_tefeu")
 
-[node name="Cell_6_8" type="ColorRect" parent="Board/Grid" unique_id=1079268170]
-offset_left = 386.0
-offset_top = 514.0
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_1_9" unique_id=1433660040]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_1_9" unique_id=965436313]
+shape = SubResource("CircleShape2D_tc087")
+
+[node name="Cell_2_9" type="ColorRect" parent="Grid" unique_id=1994849545]
+offset_left = 114.0
+offset_top = 506.0
+offset_right = 166.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_2_9" type="Area2D" parent="Grid" unique_id=1325272605]
+position = Vector2(140, 532)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_2_9" unique_id=1931895721]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_2_9" unique_id=311755266]
+shape = SubResource("CircleShape2D_73205")
+
+[node name="Cell_3_9" type="ColorRect" parent="Grid" unique_id=1067026723]
+offset_left = 170.0
+offset_top = 506.0
+offset_right = 222.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_3_9" type="Area2D" parent="Grid" unique_id=1800934826]
+position = Vector2(196, 532)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_3_9" unique_id=746819521]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_3_9" unique_id=1111852309]
+shape = SubResource("CircleShape2D_0tljd")
+
+[node name="Cell_4_9" type="ColorRect" parent="Grid" unique_id=1262913394]
+offset_left = 226.0
+offset_top = 506.0
+offset_right = 278.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_4_9" type="Area2D" parent="Grid" unique_id=576186441]
+position = Vector2(252, 532)
+script = ExtResource("2_tefeu")
+color_index = 3
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_4_9" unique_id=624752980]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_4_9" unique_id=42449351]
+shape = SubResource("CircleShape2D_mgpkq")
+
+[node name="Cell_5_9" type="ColorRect" parent="Grid" unique_id=1858269796]
+offset_left = 282.0
+offset_top = 506.0
+offset_right = 334.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_5_9" type="Area2D" parent="Grid" unique_id=1300328857]
+position = Vector2(308, 532)
+script = ExtResource("2_tefeu")
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_5_9" unique_id=1279889766]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_5_9" unique_id=1147049370]
+shape = SubResource("CircleShape2D_xmrkg")
+
+[node name="Cell_6_9" type="ColorRect" parent="Grid" unique_id=1744937024]
+offset_left = 338.0
+offset_top = 506.0
+offset_right = 390.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
+
+[node name="Passenger_6_9" type="Area2D" parent="Grid" unique_id=2031548370]
+position = Vector2(364, 532)
+script = ExtResource("2_tefeu")
+color_index = 1
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_6_9" unique_id=1635621250]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_6_9" unique_id=986399943]
+shape = SubResource("CircleShape2D_wvlrk")
+
+[node name="Cell_7_9" type="ColorRect" parent="Grid" unique_id=53427681]
+offset_left = 394.0
+offset_top = 506.0
 offset_right = 446.0
-offset_bottom = 574.0
-color = Color(0.3, 0.5, 0.3, 1)
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_7_8" type="ColorRect" parent="Board/Grid" unique_id=1002335934]
+[node name="Passenger_7_9" type="Area2D" parent="Grid" unique_id=287689657]
+position = Vector2(420, 532)
+script = ExtResource("2_tefeu")
+color_index = 2
+
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_7_9" unique_id=663835741]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
+
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_7_9" unique_id=1355008689]
+shape = SubResource("CircleShape2D_engxj")
+
+[node name="Cell_8_9" type="ColorRect" parent="Grid" unique_id=1300628677]
 offset_left = 450.0
-offset_top = 514.0
-offset_right = 510.0
-offset_bottom = 574.0
-color = Color(0.35, 0.55, 0.35, 1)
+offset_top = 506.0
+offset_right = 502.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_8_8" type="ColorRect" parent="Board/Grid" unique_id=1552820575]
-offset_left = 514.0
-offset_top = 514.0
-offset_right = 574.0
-offset_bottom = 574.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Passenger_8_9" type="Area2D" parent="Grid" unique_id=2036994738]
+position = Vector2(476, 532)
+script = ExtResource("2_tefeu")
+color_index = 3
 
-[node name="Cell_9_8" type="ColorRect" parent="Board/Grid" unique_id=325098500]
-offset_left = 578.0
-offset_top = 514.0
-offset_right = 638.0
-offset_bottom = 574.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_8_9" unique_id=324075123]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_0_9" type="ColorRect" parent="Board/Grid" unique_id=1241295948]
-offset_left = 2.0
-offset_top = 578.0
-offset_right = 62.0
-offset_bottom = 638.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_8_9" unique_id=1647322990]
+shape = SubResource("CircleShape2D_raiwf")
 
-[node name="Cell_1_9" type="ColorRect" parent="Board/Grid" unique_id=1193589970]
-offset_left = 66.0
-offset_top = 578.0
-offset_right = 126.0
-offset_bottom = 638.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Cell_9_9" type="ColorRect" parent="Grid" unique_id=793058534]
+offset_left = 506.0
+offset_top = 506.0
+offset_right = 558.0
+offset_bottom = 558.0
+color = Color(0.4, 0.48, 0.28, 1)
 
-[node name="Cell_2_9" type="ColorRect" parent="Board/Grid" unique_id=872116841]
-offset_left = 130.0
-offset_top = 578.0
-offset_right = 190.0
-offset_bottom = 638.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Passenger_9_9" type="Area2D" parent="Grid" unique_id=1451508333]
+position = Vector2(532, 532)
+script = ExtResource("2_tefeu")
 
-[node name="Cell_3_9" type="ColorRect" parent="Board/Grid" unique_id=1899856332]
-offset_left = 194.0
-offset_top = 578.0
-offset_right = 254.0
-offset_bottom = 638.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Visual" type="Polygon2D" parent="Grid/Passenger_9_9" unique_id=1991691346]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(20, 0, 18.47759, 7.6536684, 14.142136, 14.142136, 7.6536684, 18.47759, 1.2246468e-15, 20, -7.6536684, 18.47759, -14.142136, 14.142136, -18.47759, 7.6536684, -20, 2.4492936e-15, -18.47759, -7.6536684, -14.142136, -14.142136, -7.6536684, -18.47759, -3.67394e-15, -20, 7.6536684, -18.47759, 14.142136, -14.142136, 18.47759, -7.6536684)
 
-[node name="Cell_4_9" type="ColorRect" parent="Board/Grid" unique_id=880813556]
-offset_left = 258.0
-offset_top = 578.0
-offset_right = 318.0
-offset_bottom = 638.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Collision" type="CollisionShape2D" parent="Grid/Passenger_9_9" unique_id=922172320]
+shape = SubResource("CircleShape2D_roort")
 
-[node name="Cell_5_9" type="ColorRect" parent="Board/Grid" unique_id=1579200146]
-offset_left = 322.0
-offset_top = 578.0
-offset_right = 382.0
-offset_bottom = 638.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="ConveyorPath" type="Path2D" parent="." unique_id=736637274]
+position = Vector2(150, 80)
+curve = SubResource("Curve2D_gm02q")
+script = ExtResource("3_o6xl0")
 
-[node name="Cell_6_9" type="ColorRect" parent="Board/Grid" unique_id=1489791713]
-offset_left = 386.0
-offset_top = 578.0
-offset_right = 446.0
-offset_bottom = 638.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="TrainFollow" type="PathFollow2D" parent="ConveyorPath" unique_id=914674344]
 
-[node name="Cell_7_9" type="ColorRect" parent="Board/Grid" unique_id=375158215]
-offset_left = 450.0
-offset_top = 578.0
-offset_right = 510.0
-offset_bottom = 638.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Train" type="Node2D" parent="ConveyorPath/TrainFollow" unique_id=1482307445]
+script = ExtResource("4_tipki")
 
-[node name="Cell_8_9" type="ColorRect" parent="Board/Grid" unique_id=68455604]
-offset_left = 514.0
-offset_top = 578.0
-offset_right = 574.0
-offset_bottom = 638.0
-color = Color(0.35, 0.55, 0.35, 1)
+[node name="Wagon0" type="ColorRect" parent="ConveyorPath/TrainFollow/Train" unique_id=986828474]
+offset_left = -18.0
+offset_top = -11.0
+offset_right = 18.0
+offset_bottom = 11.0
+color = Color(0.95, 0.85, 0.25, 1)
+script = ExtResource("5_85g3d")
 
-[node name="Cell_9_9" type="ColorRect" parent="Board/Grid" unique_id=842913937]
-offset_left = 578.0
-offset_top = 578.0
-offset_right = 638.0
-offset_bottom = 638.0
-color = Color(0.3, 0.5, 0.3, 1)
+[node name="Wagon1" type="ColorRect" parent="ConveyorPath/TrainFollow/Train" unique_id=186650239]
+offset_left = -58.0
+offset_top = -11.0
+offset_right = -22.0
+offset_bottom = 11.0
+color = Color(0.3, 0.7, 0.35, 1)
+script = ExtResource("5_85g3d")
+color_index = 1
 
-[node name="ConveyorPath" type="Path2D" parent="Board" unique_id=1924431512]
-curve = SubResource("Curve2D_jyhfs")
-script = ExtResource("1_0wfyh")
+[node name="Wagon2" type="ColorRect" parent="ConveyorPath/TrainFollow/Train" unique_id=601770920]
+offset_left = -98.0
+offset_top = -11.0
+offset_right = -62.0
+offset_bottom = 11.0
+color = Color(0.3, 0.45, 0.85, 1)
+script = ExtResource("5_85g3d")
+color_index = 2
 
-[node name="TrainFollow" type="PathFollow2D" parent="Board/ConveyorPath" unique_id=2045266978]
-loop = true
-rotates = true
+[node name="Wagon3" type="ColorRect" parent="ConveyorPath/TrainFollow/Train" unique_id=423140889]
+offset_left = -138.0
+offset_top = -11.0
+offset_right = -102.0
+offset_bottom = 11.0
+color = Color(0.85, 0.35, 0.65, 1)
+script = ExtResource("5_85g3d")
+color_index = 3
 
-[node name="Train" type="Node2D" parent="Board/ConveyorPath/TrainFollow" unique_id=1561225999]
-script = ExtResource("2_sugp2")
-
-[node name="Wagon0" type="ColorRect" parent="Board/ConveyorPath/TrainFollow/Train" unique_id=1504566954]
-offset_left = -20.0
-offset_top = -12.0
-offset_right = 20.0
-offset_bottom = 12.0
-color = Color(0.8, 0.2, 0.2, 1)
-
-[node name="Wagon1" type="ColorRect" parent="Board/ConveyorPath/TrainFollow/Train" unique_id=528790185]
-offset_left = -65.0
-offset_top = -12.0
-offset_right = -25.0
-offset_bottom = 12.0
-color = Color(0.6, 0.3, 0.3, 1)
-
-[node name="Wagon2" type="ColorRect" parent="Board/ConveyorPath/TrainFollow/Train" unique_id=1991233210]
-offset_left = -110.0
-offset_top = -12.0
-offset_right = -70.0
-offset_bottom = 12.0
-color = Color(0.6, 0.3, 0.3, 1)
-
-[node name="UI" type="CanvasLayer" parent="." unique_id=1809156625]
-
-[node name="ButtonPanel" type="Control" parent="UI" unique_id=496955975]
-layout_mode = 3
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 140.0
-offset_top = 520.0
-offset_right = 1140.0
-offset_bottom = 700.0
-
-[node name="WagonBtn_0_0" type="Button" parent="UI/ButtonPanel" unique_id=1194020334]
-layout_mode = 0
-offset_right = 70.0
-offset_bottom = 45.0
-text = "3"
-
-[node name="WagonBtn_0_1" type="Button" parent="UI/ButtonPanel" unique_id=412829966]
-layout_mode = 0
-offset_left = 80.0
-offset_right = 150.0
-offset_bottom = 45.0
-text = "2"
-
-[node name="WagonBtn_0_2" type="Button" parent="UI/ButtonPanel" unique_id=1617727778]
-layout_mode = 0
-offset_left = 160.0
-offset_right = 230.0
-offset_bottom = 45.0
-text = "4"
-
-[node name="WagonBtn_1_0" type="Button" parent="UI/ButtonPanel" unique_id=117551960]
-modulate = Color(1, 1, 1, 0.75)
-layout_mode = 0
-offset_top = 50.0
-offset_right = 70.0
-offset_bottom = 95.0
-text = "3"
-
-[node name="WagonBtn_1_1" type="Button" parent="UI/ButtonPanel" unique_id=882803227]
-modulate = Color(1, 1, 1, 0.75)
-layout_mode = 0
-offset_left = 80.0
-offset_top = 50.0
-offset_right = 150.0
-offset_bottom = 95.0
-text = "2"
-
-[node name="WagonBtn_1_2" type="Button" parent="UI/ButtonPanel" unique_id=409950442]
-modulate = Color(1, 1, 1, 0.75)
-layout_mode = 0
-offset_left = 160.0
-offset_top = 50.0
-offset_right = 230.0
-offset_bottom = 95.0
-text = "4"
-
-[node name="WagonBtn_2_0" type="Button" parent="UI/ButtonPanel" unique_id=1281779182]
-modulate = Color(1, 1, 1, 0.5)
-layout_mode = 0
-offset_top = 100.0
-offset_right = 70.0
-offset_bottom = 145.0
-text = "3"
-
-[node name="WagonBtn_2_1" type="Button" parent="UI/ButtonPanel" unique_id=1650588029]
-modulate = Color(1, 1, 1, 0.5)
-layout_mode = 0
-offset_left = 80.0
-offset_top = 100.0
-offset_right = 150.0
-offset_bottom = 145.0
-text = "2"
-
-[node name="WagonBtn_2_2" type="Button" parent="UI/ButtonPanel" unique_id=1272868756]
-modulate = Color(1, 1, 1, 0.5)
-layout_mode = 0
-offset_left = 160.0
-offset_top = 100.0
-offset_right = 230.0
-offset_bottom = 145.0
-text = "4"
-
-[node name="SpeedLabel" type="Label" parent="UI" unique_id=387539250]
+[node name="SpeedLabel" type="Label" parent="." unique_id=1376895290]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 10.0
 offset_bottom = 10.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "Speed: 1x"
+
+[node name="Instructions" type="Label" parent="." unique_id=1906211586]
+offset_left = 10.0
+offset_top = 680.0
+offset_right = 10.0
+offset_bottom = 680.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "Click a passenger when matching wagon is nearby!"
+
+[node name="Legend" type="Node2D" parent="." unique_id=1861453902]
+position = Vector2(750, 80)
+
+[node name="Swatch0" type="Polygon2D" parent="Legend" unique_id=1927957166]
+color = Color(0.95, 0.85, 0.25, 1)
+polygon = PackedVector2Array(27, 15, 26.086554, 19.592201, 23.485281, 23.485281, 19.592201, 26.086554, 15, 27, 10.407799, 26.086554, 6.514719, 23.485281, 3.9134464, 19.592201, 3, 15, 3.9134464, 10.407799, 6.514719, 6.514719, 10.407799, 3.9134464, 15, 3, 19.592201, 3.9134464, 23.485281, 6.514719, 26.086554, 10.407799)
+
+[node name="Label0" type="Label" parent="Legend" unique_id=233276368]
+offset_left = 40.0
+offset_top = 5.0
+offset_right = 40.0
+offset_bottom = 5.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Yellow"
+
+[node name="Swatch1" type="Polygon2D" parent="Legend" unique_id=1650848345]
+color = Color(0.3, 0.7, 0.35, 1)
+polygon = PackedVector2Array(27, 65, 26.086554, 69.5922, 23.485281, 73.48528, 19.592201, 76.086555, 15, 77, 10.407799, 76.086555, 6.514719, 73.48528, 3.9134464, 69.5922, 3, 65, 3.9134464, 60.4078, 6.514719, 56.514717, 10.407799, 53.913445, 15, 53, 19.592201, 53.913445, 23.485281, 56.514717, 26.086554, 60.4078)
+
+[node name="Label1" type="Label" parent="Legend" unique_id=534009332]
+offset_left = 40.0
+offset_top = 55.0
+offset_right = 40.0
+offset_bottom = 55.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Green"
+
+[node name="Swatch2" type="Polygon2D" parent="Legend" unique_id=703878118]
+color = Color(0.3, 0.45, 0.85, 1)
+polygon = PackedVector2Array(27, 115, 26.086554, 119.5922, 23.485281, 123.48528, 19.592201, 126.086555, 15, 127, 10.407799, 126.086555, 6.514719, 123.48528, 3.9134464, 119.5922, 3, 115, 3.9134464, 110.4078, 6.514719, 106.51472, 10.407799, 103.913445, 15, 103, 19.592201, 103.913445, 23.485281, 106.51472, 26.086554, 110.4078)
+
+[node name="Label2" type="Label" parent="Legend" unique_id=324858781]
+offset_left = 40.0
+offset_top = 105.0
+offset_right = 40.0
+offset_bottom = 105.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Blue"
+
+[node name="Swatch3" type="Polygon2D" parent="Legend" unique_id=1986895144]
+color = Color(0.85, 0.35, 0.65, 1)
+polygon = PackedVector2Array(27, 165, 26.086554, 169.5922, 23.485281, 173.48528, 19.592201, 176.08655, 15, 177, 10.407799, 176.08655, 6.514719, 173.48528, 3.9134464, 169.5922, 3, 165, 3.9134464, 160.4078, 6.514719, 156.51472, 10.407799, 153.91345, 15, 153, 19.592201, 153.91345, 23.485281, 156.51472, 26.086554, 160.4078)
+
+[node name="Label3" type="Label" parent="Legend" unique_id=611316308]
+offset_left = 40.0
+offset_top = 155.0
+offset_right = 40.0
+offset_bottom = 155.0
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Pink"
