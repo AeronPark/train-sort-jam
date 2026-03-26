@@ -23,8 +23,12 @@ const TRAIN_SPEED := 200.0
 
 # Game state
 var grid: Array = []  # 2D array of passenger colors (or null)
-var conveyor_layer := 0  # Current conveyor ring (0 = outermost)
-var max_layers := 5  # How many times conveyor can shrink
+
+# Dynamic conveyor bounds (in grid coordinates)
+var conveyor_min_row := 0
+var conveyor_max_row := GRID_ROWS - 1
+var conveyor_min_col := 0
+var conveyor_max_col := GRID_COLS - 1
 
 # Train state
 var train_active := false
@@ -222,14 +226,35 @@ func _on_button_pressed(index: int) -> void:
 
 # ============ CONVEYOR PATH ============
 
-func _get_conveyor_bounds() -> Dictionary:
-	# Each layer shrinks the conveyor inward
-	var shrink = conveyor_layer * CELL_SIZE * 2
+func _recalculate_conveyor_bounds() -> void:
+	# Find the bounding box of all remaining passengers
+	var min_row = GRID_ROWS
+	var max_row = -1
+	var min_col = GRID_COLS
+	var max_col = -1
 	
-	var left = grid_origin.x + shrink
-	var right = grid_origin.x + GRID_COLS * CELL_SIZE - shrink
-	var top = grid_origin.y + shrink
-	var bottom = grid_origin.y + GRID_ROWS * CELL_SIZE - shrink
+	for row in range(GRID_ROWS):
+		for col in range(GRID_COLS):
+			if grid[row][col] != null:
+				min_row = min(min_row, row)
+				max_row = max(max_row, row)
+				min_col = min(min_col, col)
+				max_col = max(max_col, col)
+	
+	# Update conveyor bounds (keep valid if no passengers)
+	if max_row >= 0:
+		conveyor_min_row = min_row
+		conveyor_max_row = max_row
+		conveyor_min_col = min_col
+		conveyor_max_col = max_col
+		print("Conveyor reshaped: rows %d-%d, cols %d-%d" % [min_row, max_row, min_col, max_col])
+
+func _get_conveyor_bounds() -> Dictionary:
+	# Convert grid coordinates to world coordinates
+	var left = grid_origin.x + conveyor_min_col * CELL_SIZE
+	var right = grid_origin.x + (conveyor_max_col + 1) * CELL_SIZE
+	var top = grid_origin.y + conveyor_min_row * CELL_SIZE
+	var bottom = grid_origin.y + (conveyor_max_row + 1) * CELL_SIZE
 	
 	return {"left": left, "right": right, "top": top, "bottom": bottom}
 
@@ -277,40 +302,36 @@ func _get_cells_at_train_position() -> Array:
 	var bounds = _get_conveyor_bounds()
 	
 	# Determine which edge we're on and get adjacent cells
-	var edge_threshold = TRACK_WIDTH
+	var edge_threshold = TRACK_WIDTH + 5
 	
-	# Check each edge
+	# Check each edge - using conveyor grid bounds directly
 	if abs(train_world.y - (bounds.top - TRACK_WIDTH/2)) < edge_threshold:
-		# Top edge - get row at top of current conveyor
-		var row = int((bounds.top - grid_origin.y) / CELL_SIZE)
+		# Top edge - row = conveyor_min_row
 		var col = int((train_world.x - grid_origin.x) / CELL_SIZE)
-		for c in range(max(0, col - 1), min(GRID_COLS, col + 2)):
-			if row >= 0 and row < GRID_ROWS:
-				cells.append(Vector2i(c, row))
+		col = clamp(col, conveyor_min_col, conveyor_max_col)
+		for c in range(max(conveyor_min_col, col - 1), min(conveyor_max_col + 1, col + 2)):
+			cells.append(Vector2i(c, conveyor_min_row))
 	
 	elif abs(train_world.x - (bounds.right + TRACK_WIDTH/2)) < edge_threshold:
-		# Right edge
-		var col = int((bounds.right - grid_origin.x) / CELL_SIZE) - 1
+		# Right edge - col = conveyor_max_col
 		var row = int((train_world.y - grid_origin.y) / CELL_SIZE)
-		for r in range(max(0, row - 1), min(GRID_ROWS, row + 2)):
-			if col >= 0 and col < GRID_COLS:
-				cells.append(Vector2i(col, r))
+		row = clamp(row, conveyor_min_row, conveyor_max_row)
+		for r in range(max(conveyor_min_row, row - 1), min(conveyor_max_row + 1, row + 2)):
+			cells.append(Vector2i(conveyor_max_col, r))
 	
 	elif abs(train_world.y - (bounds.bottom + TRACK_WIDTH/2)) < edge_threshold:
-		# Bottom edge
-		var row = int((bounds.bottom - grid_origin.y) / CELL_SIZE) - 1
+		# Bottom edge - row = conveyor_max_row
 		var col = int((train_world.x - grid_origin.x) / CELL_SIZE)
-		for c in range(max(0, col - 1), min(GRID_COLS, col + 2)):
-			if row >= 0 and row < GRID_ROWS:
-				cells.append(Vector2i(c, row))
+		col = clamp(col, conveyor_min_col, conveyor_max_col)
+		for c in range(max(conveyor_min_col, col - 1), min(conveyor_max_col + 1, col + 2)):
+			cells.append(Vector2i(c, conveyor_max_row))
 	
 	elif abs(train_world.x - (bounds.left - TRACK_WIDTH/2)) < edge_threshold:
-		# Left edge
-		var col = int((bounds.left - grid_origin.x) / CELL_SIZE)
+		# Left edge - col = conveyor_min_col
 		var row = int((train_world.y - grid_origin.y) / CELL_SIZE)
-		for r in range(max(0, row - 1), min(GRID_ROWS, row + 2)):
-			if col >= 0 and col < GRID_COLS:
-				cells.append(Vector2i(col, r))
+		row = clamp(row, conveyor_min_row, conveyor_max_row)
+		for r in range(max(conveyor_min_row, row - 1), min(conveyor_max_row + 1, row + 2)):
+			cells.append(Vector2i(conveyor_min_col, r))
 	
 	return cells
 
@@ -400,9 +421,8 @@ func _complete_train_run() -> void:
 	active_button = {}
 
 func _shrink_conveyor() -> void:
-	if conveyor_layer < max_layers:
-		conveyor_layer += 1
-		print("Conveyor shrunk to layer %d" % conveyor_layer)
+	# Recalculate bounds to fit exactly around remaining passengers
+	_recalculate_conveyor_bounds()
 
 func _check_win() -> bool:
 	# Win if no passengers left
@@ -427,30 +447,27 @@ func _check_lose() -> bool:
 
 func _get_reachable_colors() -> Dictionary:
 	var colors = {}
-	var bounds = _get_conveyor_bounds()
 	
-	# Get the edge rows/cols for current conveyor
-	var top_row = int((bounds.top - grid_origin.y) / CELL_SIZE)
-	var bottom_row = int((bounds.bottom - grid_origin.y) / CELL_SIZE) - 1
-	var left_col = int((bounds.left - grid_origin.x) / CELL_SIZE)
-	var right_col = int((bounds.right - grid_origin.x) / CELL_SIZE) - 1
+	# Check all edge cells of current conveyor bounds
+	# Top edge
+	for col in range(conveyor_min_col, conveyor_max_col + 1):
+		var c = grid[conveyor_min_row][col]
+		if c: colors[c] = colors.get(c, 0) + 1
 	
-	# Check all edge cells
-	for col in range(left_col, right_col + 1):
-		if top_row >= 0 and top_row < GRID_ROWS and col >= 0 and col < GRID_COLS:
-			var c = grid[top_row][col]
-			if c: colors[c] = colors.get(c, 0) + 1
-		if bottom_row >= 0 and bottom_row < GRID_ROWS and col >= 0 and col < GRID_COLS:
-			var c = grid[bottom_row][col]
-			if c: colors[c] = colors.get(c, 0) + 1
+	# Bottom edge
+	for col in range(conveyor_min_col, conveyor_max_col + 1):
+		var c = grid[conveyor_max_row][col]
+		if c: colors[c] = colors.get(c, 0) + 1
 	
-	for row in range(top_row + 1, bottom_row):
-		if left_col >= 0 and left_col < GRID_COLS and row >= 0 and row < GRID_ROWS:
-			var c = grid[row][left_col]
-			if c: colors[c] = colors.get(c, 0) + 1
-		if right_col >= 0 and right_col < GRID_COLS and row >= 0 and row < GRID_ROWS:
-			var c = grid[row][right_col]
-			if c: colors[c] = colors.get(c, 0) + 1
+	# Left edge (excluding corners already counted)
+	for row in range(conveyor_min_row + 1, conveyor_max_row):
+		var c = grid[row][conveyor_min_col]
+		if c: colors[c] = colors.get(c, 0) + 1
+	
+	# Right edge (excluding corners already counted)
+	for row in range(conveyor_min_row + 1, conveyor_max_row):
+		var c = grid[row][conveyor_max_col]
+		if c: colors[c] = colors.get(c, 0) + 1
 	
 	return colors
 
@@ -516,12 +533,22 @@ func _draw_train() -> void:
 	# Note: Can't easily draw text in _draw, would need Label node
 
 func _draw_ui() -> void:
-	# Draw layer indicator
 	var font = ThemeDB.fallback_font
-	var text = "Layer: %d" % conveyor_layer
+	
+	# Draw remaining passenger count
+	var remaining = _count_remaining_passengers()
+	var text = "Remaining: %d" % remaining
 	draw_string(font, Vector2(20, 30), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
 	
 	# Draw collected count if train active
 	if train_active:
 		var collected_text = "Collecting: %d/%d %s" % [train_collected, active_button.count, train_color]
 		draw_string(font, Vector2(20, 55), collected_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, COLOR_VALUES.get(train_color, Color.WHITE))
+
+func _count_remaining_passengers() -> int:
+	var count = 0
+	for row in range(GRID_ROWS):
+		for col in range(GRID_COLS):
+			if grid[row][col] != null:
+				count += 1
+	return count
