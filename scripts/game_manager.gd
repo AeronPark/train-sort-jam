@@ -1,12 +1,12 @@
 extends Node2D
 
-# Grid settings - Portrait orientation like reference
+# Grid settings - Portrait orientation
 const GRID_COLS := 16
 const GRID_ROWS := 21
 const CELL_SIZE := 22
 const GRID_MARGIN := 10
 
-# Colors - 6 colors visible in reference
+# Colors
 const COLORS := ["red", "pink", "purple", "green", "cyan", "yellow"]
 const COLOR_VALUES := {
 	"red": Color(0.9, 0.25, 0.25),
@@ -19,18 +19,35 @@ const COLOR_VALUES := {
 
 # Track settings
 const TRACK_WIDTH := 24
-const TRAIN_SPEED := 100.0
+const TRAIN_SPEED := 200.0
 
 # Game state
 var grid: Array = []  # 2D array of passenger colors (or null)
-var train_position := 0.0  # 0.0 to 1.0 around track
-var pickup_range := 4  # How many cells the train can reach
+var conveyor_layer := 0  # Current conveyor ring (0 = outermost)
+var max_layers := 5  # How many times conveyor can shrink
 
-# UI
+# Train state
+var train_active := false
+var train_position := 0.0  # 0.0 to 1.0 around current conveyor
+var train_color: String = ""
+var train_capacity := 0  # How many left to pick up this run
+var train_collected := 0  # How many picked up this run
+var active_button: Dictionary = {}  # The button being used
+
+# Button inventory system
+var button_inventory: Array = []  # Array of {color, count}
+const MAX_BUTTONS := 6
+const BUTTON_SIZE := 65
+const BUTTON_SPACING := 12
+
+# UI references
 var grid_origin: Vector2
 var passenger_sprites: Array = []
-var color_buttons: Dictionary = {}  # color -> Button
-var color_counts: Dictionary = {}  # color -> current count in zone
+var button_nodes: Array = []  # Button UI nodes
+
+# Signals
+signal level_complete
+signal level_failed
 
 func _ready() -> void:
 	var viewport_size = get_viewport_rect().size
@@ -40,24 +57,24 @@ func _ready() -> void:
 	var grid_height = GRID_ROWS * CELL_SIZE
 	grid_origin = Vector2(
 		(viewport_size.x - grid_width) / 2,
-		TRACK_WIDTH + GRID_MARGIN + 20
+		TRACK_WIDTH + GRID_MARGIN + 40
 	)
 	
 	_init_grid()
 	_create_passengers()
-	_create_buttons()
+	_deal_initial_buttons()
+	_update_button_ui()
 	
 	queue_redraw()
 
 func _init_grid() -> void:
 	grid.clear()
 	
-	# Create color bands like in reference image
+	# Create color bands
 	for row in range(GRID_ROWS):
 		var grid_row = []
 		var band_color: String
 		
-		# Assign colors by row bands
 		if row < 4:
 			band_color = "red"
 		elif row < 7:
@@ -72,11 +89,9 @@ func _init_grid() -> void:
 			band_color = "yellow"
 		
 		for col in range(GRID_COLS):
-			# Some randomness within bands
 			if randf() < 0.15:
-				# Mix in adjacent colors occasionally
-				var adjacent_colors = _get_adjacent_band_colors(band_color)
-				grid_row.append(adjacent_colors[randi() % adjacent_colors.size()])
+				var adjacent = _get_adjacent_band_colors(band_color)
+				grid_row.append(adjacent[randi() % adjacent.size()])
 			else:
 				grid_row.append(band_color)
 		grid.append(grid_row)
@@ -122,293 +137,391 @@ func _create_passenger_sprite(row: int, col: int, color: String) -> Node2D:
 func _grid_to_world(row: int, col: int) -> Vector2:
 	return grid_origin + Vector2(col * CELL_SIZE + CELL_SIZE/2, row * CELL_SIZE + CELL_SIZE/2)
 
-func _create_buttons() -> void:
+# ============ BUTTON INVENTORY SYSTEM ============
+
+func _deal_initial_buttons() -> void:
+	button_inventory.clear()
+	for i in range(MAX_BUTTONS):
+		_deal_one_button()
+
+func _deal_one_button() -> void:
+	if button_inventory.size() >= MAX_BUTTONS:
+		return
+	
+	# Random color and number 1-5
+	var color = COLORS[randi() % COLORS.size()]
+	var count = (randi() % 5) + 1  # 1 to 5
+	button_inventory.append({"color": color, "count": count})
+
+func _update_button_ui() -> void:
+	# Clear old buttons
+	for btn in button_nodes:
+		btn.queue_free()
+	button_nodes.clear()
+	
 	var viewport_size = get_viewport_rect().size
-	var grid_height = GRID_ROWS * CELL_SIZE
-	var button_area_top = grid_origin.y + grid_height + TRACK_WIDTH + 30
-	
-	var button_size = 65
-	var spacing = 15
-	var total_width = 3 * button_size + 2 * spacing
+	var total_width = button_inventory.size() * BUTTON_SIZE + (button_inventory.size() - 1) * BUTTON_SPACING
 	var start_x = (viewport_size.x - total_width) / 2
+	var button_y = viewport_size.y - BUTTON_SIZE - 30
 	
-	# 3x3 grid of buttons, but only 6 colors
-	var button_positions = [
-		[0, 0], [0, 1], [0, 2],  # Row 1: purple, red, green
-		[1, 0], [1, 1], [1, 2],  # Row 2: purple, pink, pink
-		[2, 0], [2, 1], [2, 2]   # Row 3: pink, cyan, yellow
-	]
-	
-	# Assign colors to button positions (matching reference layout roughly)
-	var button_colors = ["purple", "red", "green", "purple", "pink", "pink", "pink", "cyan", "yellow"]
-	
-	# Actually, let's use one button per color in a 2x3 grid
-	var colors_for_buttons = ["red", "pink", "purple", "green", "cyan", "yellow"]
-	
-	for i in range(colors_for_buttons.size()):
-		var color = colors_for_buttons[i]
-		var row = i / 3
-		var col = i % 3
-		
+	for i in range(button_inventory.size()):
+		var btn_data = button_inventory[i]
 		var btn = Button.new()
-		btn.text = "0"
-		btn.custom_minimum_size = Vector2(button_size, button_size)
-		btn.position = Vector2(
-			start_x + col * (button_size + spacing),
-			button_area_top + row * (button_size + spacing)
-		)
+		btn.text = str(btn_data.count)
+		btn.custom_minimum_size = Vector2(BUTTON_SIZE, BUTTON_SIZE)
+		btn.position = Vector2(start_x + i * (BUTTON_SIZE + BUTTON_SPACING), button_y)
 		
-		# Style the button with color
+		# Style with color
 		var style = StyleBoxFlat.new()
-		style.bg_color = COLOR_VALUES[color]
-		style.corner_radius_top_left = 8
-		style.corner_radius_top_right = 8
-		style.corner_radius_bottom_left = 8
-		style.corner_radius_bottom_right = 8
-		btn.add_theme_stylebox_override("normal", style)
-		btn.add_theme_stylebox_override("hover", style)
-		btn.add_theme_stylebox_override("pressed", style)
+		style.bg_color = COLOR_VALUES[btn_data.color]
+		style.corner_radius_top_left = 10
+		style.corner_radius_top_right = 10
+		style.corner_radius_bottom_left = 10
+		style.corner_radius_bottom_right = 10
 		
-		# Dark text for light colors
-		if color in ["yellow", "cyan", "pink"]:
+		var hover_style = style.duplicate()
+		hover_style.bg_color = COLOR_VALUES[btn_data.color].lightened(0.2)
+		
+		var disabled_style = style.duplicate()
+		disabled_style.bg_color = COLOR_VALUES[btn_data.color].darkened(0.4)
+		
+		btn.add_theme_stylebox_override("normal", style)
+		btn.add_theme_stylebox_override("hover", hover_style)
+		btn.add_theme_stylebox_override("pressed", style)
+		btn.add_theme_stylebox_override("disabled", disabled_style)
+		
+		# Text color
+		if btn_data.color in ["yellow", "cyan", "pink"]:
 			btn.add_theme_color_override("font_color", Color.BLACK)
 		else:
 			btn.add_theme_color_override("font_color", Color.WHITE)
 		
-		btn.add_theme_font_size_override("font_size", 28)
-		btn.pressed.connect(_on_color_button_pressed.bind(color))
+		btn.add_theme_font_size_override("font_size", 32)
+		btn.pressed.connect(_on_button_pressed.bind(i))
+		
+		# Disable if train is active
+		btn.disabled = train_active
 		
 		add_child(btn)
-		color_buttons[color] = btn
-		color_counts[color] = 0
+		button_nodes.append(btn)
 
-func _on_color_button_pressed(color: String) -> void:
-	var count = color_counts[color]
-	if count > 0:
-		_pickup_color(color)
-
-func _pickup_color(color: String) -> void:
-	var cells = _get_train_adjacent_cells()
-	var picked = 0
+func _on_button_pressed(index: int) -> void:
+	if train_active:
+		return
 	
-	for cell in cells:
-		var row = cell.y
-		var col = cell.x
-		if row >= 0 and row < GRID_ROWS and col >= 0 and col < GRID_COLS:
-			if grid[row][col] == color:
-				_remove_passenger(row, col)
-				picked += 1
+	var btn_data = button_inventory[index]
+	active_button = {"index": index, "color": btn_data.color, "count": btn_data.count}
+	train_color = btn_data.color
+	train_capacity = btn_data.count
+	train_collected = 0
+	train_position = 0.0
+	train_active = true
 	
-	if picked > 0:
-		print("Picked up %d %s passengers!" % [picked, color])
-		_collapse_grid()
-		_update_counts()
+	_update_button_ui()
+	print("Train departing! Color: %s, Capacity: %d" % [train_color, train_capacity])
 
-func _get_train_adjacent_cells() -> Array:
+# ============ CONVEYOR PATH ============
+
+func _get_conveyor_bounds() -> Dictionary:
+	# Each layer shrinks the conveyor inward
+	var shrink = conveyor_layer * CELL_SIZE * 2
+	
+	var left = grid_origin.x + shrink
+	var right = grid_origin.x + GRID_COLS * CELL_SIZE - shrink
+	var top = grid_origin.y + shrink
+	var bottom = grid_origin.y + GRID_ROWS * CELL_SIZE - shrink
+	
+	return {"left": left, "right": right, "top": top, "bottom": bottom}
+
+func _get_conveyor_perimeter() -> float:
+	var bounds = _get_conveyor_bounds()
+	var width = bounds.right - bounds.left
+	var height = bounds.bottom - bounds.top
+	return 2 * width + 2 * height + 4 * TRACK_WIDTH
+
+func _get_train_world_position(t: float) -> Vector2:
+	var bounds = _get_conveyor_bounds()
+	var track_offset = TRACK_WIDTH / 2
+	
+	var left = bounds.left - track_offset
+	var right = bounds.right + track_offset
+	var top = bounds.top - track_offset
+	var bottom = bounds.bottom + track_offset
+	
+	var width = right - left
+	var height = bottom - top
+	var perimeter = 2 * width + 2 * height
+	var pos_along = t * perimeter
+	
+	# Top edge (left to right)
+	if pos_along < width:
+		return Vector2(left + pos_along, top)
+	pos_along -= width
+	
+	# Right edge (top to bottom)
+	if pos_along < height:
+		return Vector2(right, top + pos_along)
+	pos_along -= height
+	
+	# Bottom edge (right to left)
+	if pos_along < width:
+		return Vector2(right - pos_along, bottom)
+	pos_along -= width
+	
+	# Left edge (bottom to top)
+	return Vector2(left, bottom - pos_along)
+
+func _get_cells_at_train_position() -> Array:
 	var cells = []
-	var train_world_pos = _get_train_world_position(train_position)
+	var train_world = _get_train_world_position(train_position)
+	var bounds = _get_conveyor_bounds()
 	
-	# Determine which edge and get cells
-	var grid_width = GRID_COLS * CELL_SIZE
-	var grid_height = GRID_ROWS * CELL_SIZE
+	# Determine which edge we're on and get adjacent cells
+	var edge_threshold = TRACK_WIDTH
 	
-	var track_left = grid_origin.x - TRACK_WIDTH / 2
-	var track_right = grid_origin.x + grid_width + TRACK_WIDTH / 2
-	var track_top = grid_origin.y - TRACK_WIDTH / 2
-	var track_bottom = grid_origin.y + grid_height + TRACK_WIDTH / 2
+	# Check each edge
+	if abs(train_world.y - (bounds.top - TRACK_WIDTH/2)) < edge_threshold:
+		# Top edge - get row at top of current conveyor
+		var row = int((bounds.top - grid_origin.y) / CELL_SIZE)
+		var col = int((train_world.x - grid_origin.x) / CELL_SIZE)
+		for c in range(max(0, col - 1), min(GRID_COLS, col + 2)):
+			if row >= 0 and row < GRID_ROWS:
+				cells.append(Vector2i(c, row))
 	
-	var total_length = 2 * (track_right - track_left) + 2 * (track_bottom - track_top)
-	var pos_along = train_position * total_length
+	elif abs(train_world.x - (bounds.right + TRACK_WIDTH/2)) < edge_threshold:
+		# Right edge
+		var col = int((bounds.right - grid_origin.x) / CELL_SIZE) - 1
+		var row = int((train_world.y - grid_origin.y) / CELL_SIZE)
+		for r in range(max(0, row - 1), min(GRID_ROWS, row + 2)):
+			if col >= 0 and col < GRID_COLS:
+				cells.append(Vector2i(col, r))
 	
-	var top_length = track_right - track_left
-	var right_length = track_bottom - track_top
-	var bottom_length = top_length
+	elif abs(train_world.y - (bounds.bottom + TRACK_WIDTH/2)) < edge_threshold:
+		# Bottom edge
+		var row = int((bounds.bottom - grid_origin.y) / CELL_SIZE) - 1
+		var col = int((train_world.x - grid_origin.x) / CELL_SIZE)
+		for c in range(max(0, col - 1), min(GRID_COLS, col + 2)):
+			if row >= 0 and row < GRID_ROWS:
+				cells.append(Vector2i(c, row))
 	
-	if pos_along < top_length:
-		# Top edge - row 0
-		var col = int((train_world_pos.x - grid_origin.x) / CELL_SIZE)
-		for c in range(col - pickup_range, col + pickup_range + 1):
-			if c >= 0 and c < GRID_COLS:
-				cells.append(Vector2i(c, 0))
-	elif pos_along < top_length + right_length:
-		# Right edge - last column
-		var row = int((train_world_pos.y - grid_origin.y) / CELL_SIZE)
-		for r in range(row - pickup_range, row + pickup_range + 1):
-			if r >= 0 and r < GRID_ROWS:
-				cells.append(Vector2i(GRID_COLS - 1, r))
-	elif pos_along < top_length + right_length + bottom_length:
-		# Bottom edge - last row
-		var col = int((train_world_pos.x - grid_origin.x) / CELL_SIZE)
-		for c in range(col - pickup_range, col + pickup_range + 1):
-			if c >= 0 and c < GRID_COLS:
-				cells.append(Vector2i(c, GRID_ROWS - 1))
-	else:
-		# Left edge - column 0
-		var row = int((train_world_pos.y - grid_origin.y) / CELL_SIZE)
-		for r in range(row - pickup_range, row + pickup_range + 1):
-			if r >= 0 and r < GRID_ROWS:
-				cells.append(Vector2i(0, r))
+	elif abs(train_world.x - (bounds.left - TRACK_WIDTH/2)) < edge_threshold:
+		# Left edge
+		var col = int((bounds.left - grid_origin.x) / CELL_SIZE)
+		var row = int((train_world.y - grid_origin.y) / CELL_SIZE)
+		for r in range(max(0, row - 1), min(GRID_ROWS, row + 2)):
+			if col >= 0 and col < GRID_COLS:
+				cells.append(Vector2i(col, r))
 	
 	return cells
 
-func _get_train_world_position(t: float) -> Vector2:
-	var grid_width = GRID_COLS * CELL_SIZE
-	var grid_height = GRID_ROWS * CELL_SIZE
-	
-	var track_left = grid_origin.x - TRACK_WIDTH / 2
-	var track_right = grid_origin.x + grid_width + TRACK_WIDTH / 2
-	var track_top = grid_origin.y - TRACK_WIDTH / 2
-	var track_bottom = grid_origin.y + grid_height + TRACK_WIDTH / 2
-	
-	var total_length = 2 * (track_right - track_left) + 2 * (track_bottom - track_top)
-	var pos_along = t * total_length
-	
-	var top_length = track_right - track_left
-	var right_length = track_bottom - track_top
-	var bottom_length = top_length
-	
-	if pos_along < top_length:
-		return Vector2(track_left + pos_along, track_top)
-	pos_along -= top_length
-	
-	if pos_along < right_length:
-		return Vector2(track_right, track_top + pos_along)
-	pos_along -= right_length
-	
-	if pos_along < bottom_length:
-		return Vector2(track_right - pos_along, track_bottom)
-	pos_along -= bottom_length
-	
-	return Vector2(track_left, track_bottom - pos_along)
-
-func _remove_passenger(row: int, col: int) -> void:
-	grid[row][col] = null
-	if passenger_sprites[row][col]:
-		passenger_sprites[row][col].queue_free()
-		passenger_sprites[row][col] = null
-
-func _collapse_grid() -> void:
-	# Collapse toward edges (outward from center)
-	var changed = true
-	var iterations = 0
-	while changed and iterations < 100:
-		changed = false
-		iterations += 1
-		
-		var center_row = GRID_ROWS / 2.0
-		var center_col = GRID_COLS / 2.0
-		
-		for row in range(GRID_ROWS):
-			for col in range(GRID_COLS):
-				if grid[row][col] == null:
-					# Find direction to pull from (toward center)
-					var pull_from = _find_pull_source(row, col, center_row, center_col)
-					if pull_from != Vector2i(-1, -1):
-						_move_passenger(pull_from.y, pull_from.x, row, col)
-						changed = true
-
-func _find_pull_source(row: int, col: int, center_row: float, center_col: float) -> Vector2i:
-	# Pull from the direction toward center
-	var candidates = []
-	
-	# Check row direction
-	if row < center_row and row + 1 < GRID_ROWS:
-		if grid[row + 1][col] != null:
-			candidates.append(Vector2i(col, row + 1))
-	elif row >= center_row and row - 1 >= 0:
-		if grid[row - 1][col] != null:
-			candidates.append(Vector2i(col, row - 1))
-	
-	# Check column direction
-	if col < center_col and col + 1 < GRID_COLS:
-		if grid[row][col + 1] != null:
-			candidates.append(Vector2i(col + 1, row))
-	elif col >= center_col and col - 1 >= 0:
-		if grid[row][col - 1] != null:
-			candidates.append(Vector2i(col - 1, row))
-	
-	if candidates.size() > 0:
-		return candidates[0]
-	return Vector2i(-1, -1)
-
-func _move_passenger(from_row: int, from_col: int, to_row: int, to_col: int) -> void:
-	grid[to_row][to_col] = grid[from_row][from_col]
-	grid[from_row][from_col] = null
-	
-	if passenger_sprites[from_row][from_col]:
-		var sprite = passenger_sprites[from_row][from_col]
-		passenger_sprites[to_row][to_col] = sprite
-		passenger_sprites[from_row][from_col] = null
-		
-		var tween = create_tween()
-		tween.tween_property(sprite, "position", _grid_to_world(to_row, to_col), 0.1)
-
-func _update_counts() -> void:
-	# Reset counts
-	for color in COLORS:
-		color_counts[color] = 0
-	
-	# Count passengers in pickup zone
-	var cells = _get_train_adjacent_cells()
-	for cell in cells:
-		var row = cell.y
-		var col = cell.x
-		if row >= 0 and row < GRID_ROWS and col >= 0 and col < GRID_COLS:
-			var color = grid[row][col]
-			if color:
-				color_counts[color] += 1
-	
-	# Update button labels
-	for color in color_buttons:
-		color_buttons[color].text = str(color_counts[color])
+# ============ TRAIN LOGIC ============
 
 func _process(delta: float) -> void:
-	# Move train
-	var grid_width = GRID_COLS * CELL_SIZE
-	var grid_height = GRID_ROWS * CELL_SIZE
-	var perimeter = 2 * (grid_width + TRACK_WIDTH) + 2 * (grid_height + TRACK_WIDTH)
-	var move_amount = (TRAIN_SPEED * delta) / perimeter
-	train_position = fmod(train_position + move_amount, 1.0)
+	if train_active:
+		_update_train(delta)
 	
-	_update_counts()
 	queue_redraw()
 
-func _draw() -> void:
-	var grid_width = GRID_COLS * CELL_SIZE
-	var grid_height = GRID_ROWS * CELL_SIZE
+func _update_train(delta: float) -> void:
+	var perimeter = _get_conveyor_perimeter()
+	var move_amount = (TRAIN_SPEED * delta) / perimeter
+	train_position += move_amount
 	
-	# Draw outer frame (light gray like reference)
-	var frame_padding = 30
-	var frame_rect = Rect2(
-		grid_origin.x - TRACK_WIDTH - frame_padding,
-		grid_origin.y - TRACK_WIDTH - frame_padding,
-		grid_width + TRACK_WIDTH * 2 + frame_padding * 2,
-		grid_height + TRACK_WIDTH * 2 + frame_padding * 2
-	)
-	draw_rect(frame_rect, Color(0.7, 0.7, 0.7))
+	# Collect passengers as we pass
+	if train_capacity > 0:
+		_try_collect_passengers()
 	
-	# Draw track (darker gray)
-	var track_color = Color(0.4, 0.4, 0.4)
-	draw_rect(Rect2(grid_origin.x - TRACK_WIDTH, grid_origin.y - TRACK_WIDTH, 
-		grid_width + TRACK_WIDTH * 2, TRACK_WIDTH), track_color)
-	draw_rect(Rect2(grid_origin.x - TRACK_WIDTH, grid_origin.y + grid_height,
-		grid_width + TRACK_WIDTH * 2, TRACK_WIDTH), track_color)
-	draw_rect(Rect2(grid_origin.x - TRACK_WIDTH, grid_origin.y,
-		TRACK_WIDTH, grid_height), track_color)
-	draw_rect(Rect2(grid_origin.x + grid_width, grid_origin.y,
-		TRACK_WIDTH, grid_height), track_color)
+	# Check if train completed the loop
+	if train_position >= 1.0:
+		_complete_train_run()
+
+func _try_collect_passengers() -> void:
+	var cells = _get_cells_at_train_position()
 	
-	# Draw grid background (dark blue-ish like reference)
-	draw_rect(Rect2(grid_origin, Vector2(grid_width, grid_height)), Color(0.15, 0.15, 0.25))
-	
-	# Draw train position (white circle)
-	var train_pos = _get_train_world_position(train_position)
-	draw_circle(train_pos, 10, Color.WHITE)
-	draw_circle(train_pos, 6, Color(0.3, 0.3, 0.8))
-	
-	# Highlight pickup zone
-	var cells = _get_train_adjacent_cells()
 	for cell in cells:
-		var world_pos = _grid_to_world(cell.y, cell.x)
-		draw_rect(Rect2(world_pos - Vector2(CELL_SIZE/2, CELL_SIZE/2), 
-			Vector2(CELL_SIZE, CELL_SIZE)), Color(1, 1, 1, 0.15))
+		if train_collected >= active_button.count:
+			break
+			
+		var row = cell.y
+		var col = cell.x
+		
+		if row >= 0 and row < GRID_ROWS and col >= 0 and col < GRID_COLS:
+			if grid[row][col] == train_color:
+				_collect_passenger(row, col)
+
+func _collect_passenger(row: int, col: int) -> void:
+	grid[row][col] = null
+	train_collected += 1
+	train_capacity -= 1
+	
+	# Animate passenger collection
+	if passenger_sprites[row][col]:
+		var sprite = passenger_sprites[row][col]
+		var tween = create_tween()
+		tween.tween_property(sprite, "scale", Vector2.ZERO, 0.2)
+		tween.tween_callback(sprite.queue_free)
+		passenger_sprites[row][col] = null
+	
+	print("Collected! Total: %d" % train_collected)
+
+func _complete_train_run() -> void:
+	train_active = false
+	train_position = 0.0
+	
+	# Update button inventory
+	var btn_index = active_button.index
+	var remaining = active_button.count - train_collected
+	
+	if remaining <= 0:
+		# Button fully used - discard it
+		button_inventory.remove_at(btn_index)
+		print("Button discarded!")
+	else:
+		# Update button with remaining count
+		button_inventory[btn_index].count = remaining
+		print("Button updated: %d remaining" % remaining)
+	
+	# Deal new button if we have room
+	if button_inventory.size() < MAX_BUTTONS:
+		_deal_one_button()
+	
+	# Shrink conveyor for next run
+	_shrink_conveyor()
+	
+	# Check win/lose conditions
+	if _check_win():
+		print("LEVEL COMPLETE!")
+		emit_signal("level_complete")
+	elif _check_lose():
+		print("LEVEL FAILED!")
+		emit_signal("level_failed")
+	
+	_update_button_ui()
+	active_button = {}
+
+func _shrink_conveyor() -> void:
+	if conveyor_layer < max_layers:
+		conveyor_layer += 1
+		print("Conveyor shrunk to layer %d" % conveyor_layer)
+
+func _check_win() -> bool:
+	# Win if no passengers left
+	for row in range(GRID_ROWS):
+		for col in range(GRID_COLS):
+			if grid[row][col] != null:
+				return false
+	return true
+
+func _check_lose() -> bool:
+	# Lose if no passengers are reachable by current conveyor
+	var reachable = _get_reachable_colors()
+	if reachable.is_empty():
+		return true
+	
+	# Also lose if no buttons can pick up any reachable colors
+	for btn in button_inventory:
+		if btn.color in reachable:
+			return false
+	
+	return true
+
+func _get_reachable_colors() -> Dictionary:
+	var colors = {}
+	var bounds = _get_conveyor_bounds()
+	
+	# Get the edge rows/cols for current conveyor
+	var top_row = int((bounds.top - grid_origin.y) / CELL_SIZE)
+	var bottom_row = int((bounds.bottom - grid_origin.y) / CELL_SIZE) - 1
+	var left_col = int((bounds.left - grid_origin.x) / CELL_SIZE)
+	var right_col = int((bounds.right - grid_origin.x) / CELL_SIZE) - 1
+	
+	# Check all edge cells
+	for col in range(left_col, right_col + 1):
+		if top_row >= 0 and top_row < GRID_ROWS and col >= 0 and col < GRID_COLS:
+			var c = grid[top_row][col]
+			if c: colors[c] = colors.get(c, 0) + 1
+		if bottom_row >= 0 and bottom_row < GRID_ROWS and col >= 0 and col < GRID_COLS:
+			var c = grid[bottom_row][col]
+			if c: colors[c] = colors.get(c, 0) + 1
+	
+	for row in range(top_row + 1, bottom_row):
+		if left_col >= 0 and left_col < GRID_COLS and row >= 0 and row < GRID_ROWS:
+			var c = grid[row][left_col]
+			if c: colors[c] = colors.get(c, 0) + 1
+		if right_col >= 0 and right_col < GRID_COLS and row >= 0 and row < GRID_ROWS:
+			var c = grid[row][right_col]
+			if c: colors[c] = colors.get(c, 0) + 1
+	
+	return colors
+
+# ============ DRAWING ============
+
+func _draw() -> void:
+	_draw_background()
+	_draw_conveyor()
+	_draw_train()
+	_draw_ui()
+
+func _draw_background() -> void:
+	var viewport_size = get_viewport_rect().size
+	draw_rect(Rect2(Vector2.ZERO, viewport_size), Color(0.1, 0.1, 0.15))
+
+func _draw_conveyor() -> void:
+	var bounds = _get_conveyor_bounds()
+	var track_offset = TRACK_WIDTH / 2
+	
+	# Draw track
+	var track_color = Color(0.35, 0.35, 0.4)
+	var inner_color = Color(0.15, 0.15, 0.2)
+	
+	# Outer track rectangle
+	var outer_rect = Rect2(
+		bounds.left - TRACK_WIDTH,
+		bounds.top - TRACK_WIDTH,
+		(bounds.right - bounds.left) + TRACK_WIDTH * 2,
+		(bounds.bottom - bounds.top) + TRACK_WIDTH * 2
+	)
+	draw_rect(outer_rect, track_color)
+	
+	# Inner area (grid background)
+	var inner_rect = Rect2(
+		bounds.left,
+		bounds.top,
+		bounds.right - bounds.left,
+		bounds.bottom - bounds.top
+	)
+	draw_rect(inner_rect, inner_color)
+	
+	# Draw grid lines (subtle)
+	var line_color = Color(0.2, 0.2, 0.25)
+	for row in range(GRID_ROWS + 1):
+		var y = grid_origin.y + row * CELL_SIZE
+		draw_line(Vector2(grid_origin.x, y), Vector2(grid_origin.x + GRID_COLS * CELL_SIZE, y), line_color, 1)
+	for col in range(GRID_COLS + 1):
+		var x = grid_origin.x + col * CELL_SIZE
+		draw_line(Vector2(x, grid_origin.y), Vector2(x, grid_origin.y + GRID_ROWS * CELL_SIZE), line_color, 1)
+
+func _draw_train() -> void:
+	if not train_active:
+		return
+	
+	var pos = _get_train_world_position(train_position)
+	
+	# Train body
+	draw_circle(pos, 14, Color.WHITE)
+	draw_circle(pos, 10, COLOR_VALUES.get(train_color, Color.GRAY))
+	
+	# Capacity indicator
+	var label = str(train_capacity)
+	# Note: Can't easily draw text in _draw, would need Label node
+
+func _draw_ui() -> void:
+	# Draw layer indicator
+	var font = ThemeDB.fallback_font
+	var text = "Layer: %d" % conveyor_layer
+	draw_string(font, Vector2(20, 30), text, HORIZONTAL_ALIGNMENT_LEFT, -1, 20, Color.WHITE)
+	
+	# Draw collected count if train active
+	if train_active:
+		var collected_text = "Collecting: %d/%d %s" % [train_collected, active_button.count, train_color]
+		draw_string(font, Vector2(20, 55), collected_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18, COLOR_VALUES.get(train_color, Color.WHITE))
