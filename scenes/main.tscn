@@ -729,6 +729,8 @@ curve = SubResource("Curve2D_jyhfs")
 script = ExtResource("1_0wfyh")
 
 [node name="TrainFollow" type="PathFollow2D" parent="Board/ConveyorPath" unique_id=2045266978]
+loop = true
+rotates = true
 
 [node name="Train" type="Node2D" parent="Board/ConveyorPath/TrainFollow" unique_id=1561225999]
 script = ExtResource("2_sugp2")
