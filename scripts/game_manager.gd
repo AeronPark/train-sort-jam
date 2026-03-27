@@ -372,8 +372,8 @@ func _collect_dot(row: int, col: int) -> void:
 		tween.tween_callback(dot.queue_free)
 		dots[row][col] = null
 	
-	# Rebuild track to follow indented path
-	_rebuild_track_path()
+	# Recalculate bounds immediately (this also rebuilds track)
+	_recalculate_bounds()
 
 func _complete_run() -> void:
 	# Stop the train after one pass
