@@ -241,125 +241,19 @@ func _rebuild_track_path() -> void:
 	track_path.clear()
 	track_length = 0.0
 	
+	# Simple rectangle around bounds - no indenting
 	var margin = TRACK_WIDTH / 2 + 4
 	
-	# Bottom edge (right to left) - with right-angle indents
-	var prev_has_dot = true
-	for col in range(bound_max_col, bound_min_col - 1, -1):
-		var has_dot = grid[bound_max_row][col] != null
-		var x_right = grid_origin.x + (col + 1) * CELL_SIZE
-		var x_left = grid_origin.x + col * CELL_SIZE
-		var y_out = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
-		var y_in = grid_origin.y + bound_max_row * CELL_SIZE + margin
-		
-		if has_dot:
-			if not prev_has_dot:
-				# Coming out of indent - step out with right angle
-				track_path.append(Vector2(x_right, y_in))
-				track_path.append(Vector2(x_right, y_out))
-			track_path.append(Vector2(x_left, y_out))
-		else:
-			if prev_has_dot:
-				# Going into indent - step in with right angle
-				track_path.append(Vector2(x_right, y_out))
-				track_path.append(Vector2(x_right, y_in))
-			track_path.append(Vector2(x_left, y_in))
-		prev_has_dot = has_dot
+	var left = grid_origin.x + bound_min_col * CELL_SIZE - margin
+	var right = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
+	var top = grid_origin.y + bound_min_row * CELL_SIZE - margin
+	var bottom = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
 	
-	# Bottom-left corner
-	var bl_x = grid_origin.x + bound_min_col * CELL_SIZE - margin
-	var bl_y = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
-	if not prev_has_dot:
-		track_path.append(Vector2(grid_origin.x + bound_min_col * CELL_SIZE, grid_origin.y + bound_max_row * CELL_SIZE + margin))
-		track_path.append(Vector2(grid_origin.x + bound_min_col * CELL_SIZE, bl_y))
-	track_path.append(Vector2(bl_x, bl_y))
-	
-	# Left edge (bottom to top) - with right-angle indents
-	prev_has_dot = true
-	for row in range(bound_max_row, bound_min_row - 1, -1):
-		var has_dot = grid[row][bound_min_col] != null
-		var y_bottom = grid_origin.y + (row + 1) * CELL_SIZE
-		var y_top = grid_origin.y + row * CELL_SIZE
-		var x_out = grid_origin.x + bound_min_col * CELL_SIZE - margin
-		var x_in = grid_origin.x + (bound_min_col + 1) * CELL_SIZE - margin
-		
-		if has_dot:
-			if not prev_has_dot:
-				track_path.append(Vector2(x_in, y_bottom))
-				track_path.append(Vector2(x_out, y_bottom))
-			track_path.append(Vector2(x_out, y_top))
-		else:
-			if prev_has_dot:
-				track_path.append(Vector2(x_out, y_bottom))
-				track_path.append(Vector2(x_in, y_bottom))
-			track_path.append(Vector2(x_in, y_top))
-		prev_has_dot = has_dot
-	
-	# Top-left corner
-	var tl_x = grid_origin.x + bound_min_col * CELL_SIZE - margin
-	var tl_y = grid_origin.y + bound_min_row * CELL_SIZE - margin
-	if not prev_has_dot:
-		track_path.append(Vector2(grid_origin.x + (bound_min_col + 1) * CELL_SIZE - margin, grid_origin.y + bound_min_row * CELL_SIZE))
-		track_path.append(Vector2(tl_x, grid_origin.y + bound_min_row * CELL_SIZE))
-	track_path.append(Vector2(tl_x, tl_y))
-	
-	# Top edge (left to right) - with right-angle indents
-	prev_has_dot = true
-	for col in range(bound_min_col, bound_max_col + 1):
-		var has_dot = grid[bound_min_row][col] != null
-		var x_left = grid_origin.x + col * CELL_SIZE
-		var x_right = grid_origin.x + (col + 1) * CELL_SIZE
-		var y_out = grid_origin.y + bound_min_row * CELL_SIZE - margin
-		var y_in = grid_origin.y + (bound_min_row + 1) * CELL_SIZE - margin
-		
-		if has_dot:
-			if not prev_has_dot:
-				track_path.append(Vector2(x_left, y_in))
-				track_path.append(Vector2(x_left, y_out))
-			track_path.append(Vector2(x_right, y_out))
-		else:
-			if prev_has_dot:
-				track_path.append(Vector2(x_left, y_out))
-				track_path.append(Vector2(x_left, y_in))
-			track_path.append(Vector2(x_right, y_in))
-		prev_has_dot = has_dot
-	
-	# Top-right corner
-	var tr_x = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
-	var tr_y = grid_origin.y + bound_min_row * CELL_SIZE - margin
-	if not prev_has_dot:
-		track_path.append(Vector2(grid_origin.x + (bound_max_col + 1) * CELL_SIZE, grid_origin.y + (bound_min_row + 1) * CELL_SIZE - margin))
-		track_path.append(Vector2(grid_origin.x + (bound_max_col + 1) * CELL_SIZE, tr_y))
-	track_path.append(Vector2(tr_x, tr_y))
-	
-	# Right edge (top to bottom) - with right-angle indents
-	prev_has_dot = true
-	for row in range(bound_min_row, bound_max_row + 1):
-		var has_dot = grid[row][bound_max_col] != null
-		var y_top = grid_origin.y + row * CELL_SIZE
-		var y_bottom = grid_origin.y + (row + 1) * CELL_SIZE
-		var x_out = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
-		var x_in = grid_origin.x + bound_max_col * CELL_SIZE + margin
-		
-		if has_dot:
-			if not prev_has_dot:
-				track_path.append(Vector2(x_in, y_top))
-				track_path.append(Vector2(x_out, y_top))
-			track_path.append(Vector2(x_out, y_bottom))
-		else:
-			if prev_has_dot:
-				track_path.append(Vector2(x_out, y_top))
-				track_path.append(Vector2(x_in, y_top))
-			track_path.append(Vector2(x_in, y_bottom))
-		prev_has_dot = has_dot
-	
-	# Bottom-right corner (close the loop)
-	var br_x = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
-	var br_y = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
-	if not prev_has_dot:
-		track_path.append(Vector2(grid_origin.x + bound_max_col * CELL_SIZE + margin, grid_origin.y + (bound_max_row + 1) * CELL_SIZE))
-		track_path.append(Vector2(br_x, grid_origin.y + (bound_max_row + 1) * CELL_SIZE))
-	track_path.append(Vector2(br_x, br_y))
+	# Clockwise from bottom-right
+	track_path.append(Vector2(right, bottom))  # Bottom-right
+	track_path.append(Vector2(right, top))     # Top-right
+	track_path.append(Vector2(left, top))      # Top-left
+	track_path.append(Vector2(left, bottom))   # Bottom-left
 	
 	# Calculate total length
 	for i in range(track_path.size()):
@@ -450,8 +344,68 @@ func _collect_dot(row: int, col: int) -> void:
 		tween.tween_callback(dot.queue_free)
 		dots[row][col] = null
 	
-	# Recalculate bounds immediately (this also rebuilds track)
+	# Collapse dots to fill the empty edge space
+	_collapse_dots_to_edge(row, col)
+	
+	# Recalculate bounds (this also rebuilds track)
 	_recalculate_bounds()
+
+func _collapse_dots_to_edge(empty_row: int, empty_col: int) -> void:
+	# Determine which edge this empty cell is on and pull dots toward it
+	var moved = true
+	while moved:
+		moved = false
+		
+		# If on top edge, pull from below
+		if empty_row == bound_min_row:
+			for r in range(empty_row + 1, bound_max_row + 1):
+				if grid[r][empty_col] != null:
+					_move_dot(r, empty_col, empty_row, empty_col)
+					empty_row = r
+					moved = true
+					break
+		
+		# If on bottom edge, pull from above
+		elif empty_row == bound_max_row:
+			for r in range(empty_row - 1, bound_min_row - 1, -1):
+				if grid[r][empty_col] != null:
+					_move_dot(r, empty_col, empty_row, empty_col)
+					empty_row = r
+					moved = true
+					break
+		
+		# If on left edge, pull from right
+		elif empty_col == bound_min_col:
+			for c in range(empty_col + 1, bound_max_col + 1):
+				if grid[empty_row][c] != null:
+					_move_dot(empty_row, c, empty_row, empty_col)
+					empty_col = c
+					moved = true
+					break
+		
+		# If on right edge, pull from left
+		elif empty_col == bound_max_col:
+			for c in range(empty_col - 1, bound_min_col - 1, -1):
+				if grid[empty_row][c] != null:
+					_move_dot(empty_row, c, empty_row, empty_col)
+					empty_col = c
+					moved = true
+					break
+
+func _move_dot(from_row: int, from_col: int, to_row: int, to_col: int) -> void:
+	# Move in grid
+	grid[to_row][to_col] = grid[from_row][from_col]
+	grid[from_row][from_col] = null
+	
+	# Animate sprite
+	if dots[from_row][from_col]:
+		var dot = dots[from_row][from_col]
+		dots[to_row][to_col] = dot
+		dots[from_row][from_col] = null
+		
+		var target_pos = _grid_to_world(to_row, to_col)
+		var tween = create_tween()
+		tween.tween_property(dot, "position", target_pos, 0.15)
 
 func _complete_run() -> void:
 	# Stop the train after one pass
