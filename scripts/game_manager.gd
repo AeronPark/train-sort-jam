@@ -241,52 +241,73 @@ func _rebuild_track_path() -> void:
 	track_path.clear()
 	track_length = 0.0
 	
-	# Simple smooth rectangle path around the current bounds
-	# Path indents only at the bounds level, not per-cell
-	
 	var margin = TRACK_WIDTH / 2 + 4
+	var indent = CELL_SIZE * 0.6  # How far to indent for empty cells
 	
-	var left = grid_origin.x + bound_min_col * CELL_SIZE - margin
-	var right = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
-	var top = grid_origin.y + bound_min_row * CELL_SIZE - margin
-	var bottom = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
-	
-	# Smooth rounded corners using multiple points
-	var corner_radius = 12.0
-	var corner_steps = 4
-	
-	# Start at bottom-right, go clockwise
-	# Bottom-right corner
-	_add_corner_points(Vector2(right, bottom), corner_radius, PI/2, 0, corner_steps)
-	
-	# Right edge (bottom to top) - no intermediate points needed for straight edge
-	
-	# Top-right corner
-	_add_corner_points(Vector2(right, top), corner_radius, 0, -PI/2, corner_steps)
-	
-	# Top edge (right to left)
-	
-	# Top-left corner  
-	_add_corner_points(Vector2(left, top), corner_radius, -PI/2, -PI, corner_steps)
-	
-	# Left edge (top to bottom)
+	# Bottom edge (right to left)
+	for col in range(bound_max_col, bound_min_col - 1, -1):
+		var x = grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2
+		var y_out = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
+		var y_in = y_out - indent
+		
+		if grid[bound_max_row][col] != null:
+			track_path.append(Vector2(x, y_out))
+		else:
+			track_path.append(Vector2(x, y_in))
 	
 	# Bottom-left corner
-	_add_corner_points(Vector2(left, bottom), corner_radius, PI, PI/2, corner_steps)
+	track_path.append(Vector2(grid_origin.x + bound_min_col * CELL_SIZE - margin, 
+							   grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin))
 	
-	# Bottom edge back to start
+	# Left edge (bottom to top)
+	for row in range(bound_max_row, bound_min_row - 1, -1):
+		var y = grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2
+		var x_out = grid_origin.x + bound_min_col * CELL_SIZE - margin
+		var x_in = x_out + indent
+		
+		if grid[row][bound_min_col] != null:
+			track_path.append(Vector2(x_out, y))
+		else:
+			track_path.append(Vector2(x_in, y))
+	
+	# Top-left corner
+	track_path.append(Vector2(grid_origin.x + bound_min_col * CELL_SIZE - margin,
+							   grid_origin.y + bound_min_row * CELL_SIZE - margin))
+	
+	# Top edge (left to right)
+	for col in range(bound_min_col, bound_max_col + 1):
+		var x = grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2
+		var y_out = grid_origin.y + bound_min_row * CELL_SIZE - margin
+		var y_in = y_out + indent
+		
+		if grid[bound_min_row][col] != null:
+			track_path.append(Vector2(x, y_out))
+		else:
+			track_path.append(Vector2(x, y_in))
+	
+	# Top-right corner
+	track_path.append(Vector2(grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin,
+							   grid_origin.y + bound_min_row * CELL_SIZE - margin))
+	
+	# Right edge (top to bottom)
+	for row in range(bound_min_row, bound_max_row + 1):
+		var y = grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2
+		var x_out = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
+		var x_in = x_out - indent
+		
+		if grid[row][bound_max_col] != null:
+			track_path.append(Vector2(x_out, y))
+		else:
+			track_path.append(Vector2(x_in, y))
+	
+	# Bottom-right corner (back to start)
+	track_path.append(Vector2(grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin,
+							   grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin))
 	
 	# Calculate total length
 	for i in range(track_path.size()):
 		var next_i = (i + 1) % track_path.size()
 		track_length += track_path[i].distance_to(track_path[next_i])
-
-func _add_corner_points(center: Vector2, radius: float, start_angle: float, end_angle: float, steps: int) -> void:
-	for i in range(steps + 1):
-		var t = float(i) / float(steps)
-		var angle = lerp(start_angle, end_angle, t)
-		var point = center + Vector2(cos(angle), sin(angle)) * radius
-		track_path.append(point)
 
 func _get_track_perimeter() -> float:
 	if track_length <= 0:
