@@ -344,68 +344,8 @@ func _collect_dot(row: int, col: int) -> void:
 		tween.tween_callback(dot.queue_free)
 		dots[row][col] = null
 	
-	# Collapse dots to fill the empty edge space
-	_collapse_dots_to_edge(row, col)
-	
-	# Recalculate bounds (this also rebuilds track)
+	# Recalculate bounds - track shrinks when outer edge rows/cols are fully cleared
 	_recalculate_bounds()
-
-func _collapse_dots_to_edge(empty_row: int, empty_col: int) -> void:
-	# Determine which edge this empty cell is on and pull dots toward it
-	var moved = true
-	while moved:
-		moved = false
-		
-		# If on top edge, pull from below
-		if empty_row == bound_min_row:
-			for r in range(empty_row + 1, bound_max_row + 1):
-				if grid[r][empty_col] != null:
-					_move_dot(r, empty_col, empty_row, empty_col)
-					empty_row = r
-					moved = true
-					break
-		
-		# If on bottom edge, pull from above
-		elif empty_row == bound_max_row:
-			for r in range(empty_row - 1, bound_min_row - 1, -1):
-				if grid[r][empty_col] != null:
-					_move_dot(r, empty_col, empty_row, empty_col)
-					empty_row = r
-					moved = true
-					break
-		
-		# If on left edge, pull from right
-		elif empty_col == bound_min_col:
-			for c in range(empty_col + 1, bound_max_col + 1):
-				if grid[empty_row][c] != null:
-					_move_dot(empty_row, c, empty_row, empty_col)
-					empty_col = c
-					moved = true
-					break
-		
-		# If on right edge, pull from left
-		elif empty_col == bound_max_col:
-			for c in range(empty_col - 1, bound_min_col - 1, -1):
-				if grid[empty_row][c] != null:
-					_move_dot(empty_row, c, empty_row, empty_col)
-					empty_col = c
-					moved = true
-					break
-
-func _move_dot(from_row: int, from_col: int, to_row: int, to_col: int) -> void:
-	# Move in grid
-	grid[to_row][to_col] = grid[from_row][from_col]
-	grid[from_row][from_col] = null
-	
-	# Animate sprite
-	if dots[from_row][from_col]:
-		var dot = dots[from_row][from_col]
-		dots[to_row][to_col] = dot
-		dots[from_row][from_col] = null
-		
-		var target_pos = _grid_to_world(to_row, to_col)
-		var tween = create_tween()
-		tween.tween_property(dot, "position", target_pos, 0.15)
 
 func _complete_run() -> void:
 	# Stop the train after one pass
