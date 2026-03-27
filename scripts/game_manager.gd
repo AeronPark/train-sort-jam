@@ -406,13 +406,16 @@ func _complete_run() -> void:
 		if btn:
 			btn.count -= train_collected
 			if btn.count <= 0:
-				buttons[active_button_idx] = _make_random_button()
+				buttons[active_button_idx] = null  # Mark for refresh
 	
 	active_button_idx = -1
 	train_collected = 0
 	
 	# Recalculate bounds to shrink path
 	_recalculate_bounds()
+	
+	# Refresh buttons to ensure we have valid colors for current edge
+	_refresh_buttons()
 	
 	# Update UI
 	_create_button_ui()
@@ -422,6 +425,43 @@ func _complete_run() -> void:
 		print("YOU WIN!")
 	elif _check_lose():
 		print("GAME OVER!")
+
+func _refresh_buttons() -> void:
+	var edge_colors = _get_edge_colors()
+	if edge_colors.is_empty():
+		return  # No dots left
+	
+	var available = edge_colors.keys()
+	
+	# Make sure we have at least one button for each edge color
+	var have_colors = {}
+	for btn in buttons:
+		if btn:
+			have_colors[btn.color] = true
+	
+	# Replace null buttons and ensure coverage
+	for i in range(buttons.size()):
+		if buttons[i] == null:
+			# Pick a color we need
+			var missing = []
+			for c in available:
+				if c not in have_colors:
+					missing.append(c)
+			
+			var color: String
+			if missing.size() > 0:
+				color = missing[randi() % missing.size()]
+			else:
+				color = available[randi() % available.size()]
+			
+			buttons[i] = {"color": color, "count": (randi() % 4) + 3}
+			have_colors[color] = true
+	
+	# Also check if any existing buttons have colors not on edge - replace them
+	for i in range(buttons.size()):
+		if buttons[i] and buttons[i].color not in available:
+			var color = available[randi() % available.size()]
+			buttons[i] = {"color": color, "count": (randi() % 4) + 3}
 
 func _recalculate_bounds() -> void:
 	var min_r = GRID_ROWS
