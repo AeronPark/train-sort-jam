@@ -132,13 +132,68 @@ func _grid_to_world(row: int, col: int) -> Vector2:
 
 func _deal_buttons() -> void:
 	buttons.clear()
-	for i in range(BUTTON_ROWS * BUTTON_COLS):
+	# Make sure we have at least one button for each edge color
+	var edge_colors = _get_edge_colors()
+	var needed_colors = edge_colors.keys()
+	
+	# First, add one button for each color on the edge
+	for color in needed_colors:
+		if buttons.size() < BUTTON_ROWS * BUTTON_COLS:
+			var count = min(edge_colors[color], 6)
+			count = max(count, 3)
+			buttons.append({"color": color, "count": count})
+	
+	# Fill remaining slots with random edge colors
+	while buttons.size() < BUTTON_ROWS * BUTTON_COLS:
 		buttons.append(_make_random_button())
 
 func _make_random_button() -> Dictionary:
-	var color = COLORS[randi() % COLORS.size()]
-	var count = (randi() % 4) + 3  # 3 to 6 - enough to clear a row
+	# Get colors that are actually on the current edge
+	var edge_colors = _get_edge_colors()
+	
+	if edge_colors.is_empty():
+		# Fallback if no dots left
+		var color = COLORS[randi() % COLORS.size()]
+		return {"color": color, "count": 3}
+	
+	# Pick a color that exists on the edge
+	var available = edge_colors.keys()
+	var color = available[randi() % available.size()]
+	var count = (randi() % 4) + 3  # 3 to 6
 	return {"color": color, "count": count}
+
+func _get_edge_colors() -> Dictionary:
+	var colors = {}
+	
+	# Top edge
+	for col in range(bound_min_col, bound_max_col + 1):
+		if bound_min_row >= 0 and bound_min_row < GRID_ROWS:
+			var c = grid[bound_min_row][col]
+			if c:
+				colors[c] = colors.get(c, 0) + 1
+	
+	# Bottom edge
+	for col in range(bound_min_col, bound_max_col + 1):
+		if bound_max_row >= 0 and bound_max_row < GRID_ROWS:
+			var c = grid[bound_max_row][col]
+			if c:
+				colors[c] = colors.get(c, 0) + 1
+	
+	# Left edge (excluding corners)
+	for row in range(bound_min_row + 1, bound_max_row):
+		if bound_min_col >= 0 and bound_min_col < GRID_COLS:
+			var c = grid[row][bound_min_col]
+			if c:
+				colors[c] = colors.get(c, 0) + 1
+	
+	# Right edge (excluding corners)
+	for row in range(bound_min_row + 1, bound_max_row):
+		if bound_max_col >= 0 and bound_max_col < GRID_COLS:
+			var c = grid[row][bound_max_col]
+			if c:
+				colors[c] = colors.get(c, 0) + 1
+	
+	return colors
 
 func _create_button_ui() -> void:
 	# Clear old buttons
