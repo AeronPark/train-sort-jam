@@ -1,10 +1,10 @@
 extends Node2D
 
-# Grid settings
-const GRID_COLS := 12
-const GRID_ROWS := 16
-const CELL_SIZE := 28
-const DOT_RADIUS := 10
+# Grid settings - EASY TEST LEVEL
+const GRID_COLS := 5
+const GRID_ROWS := 5
+const CELL_SIZE := 40
+const DOT_RADIUS := 14
 
 # Colors - matching reference
 const COLORS := ["magenta", "red", "purple", "green", "yellow"]
@@ -79,27 +79,20 @@ func _ready() -> void:
 func _init_grid() -> void:
 	grid.clear()
 	
-	# Create color bands like reference
+	# Simple color bands for easy level
 	for row in range(GRID_ROWS):
 		var grid_row = []
 		var band_color: String
 		
-		# Assign colors by row bands
-		if row < 3:
-			band_color = "magenta"
-		elif row < 6:
-			band_color = "red"
-		elif row < 9:
-			band_color = "purple"
-		elif row < 12:
-			band_color = "green"
-		else:
-			band_color = "yellow"
+		# Simple bands - one color per row for easy testing
+		match row:
+			0: band_color = "red"
+			1: band_color = "green"
+			2: band_color = "purple"
+			3: band_color = "yellow"
+			_: band_color = "magenta"
 		
 		for col in range(GRID_COLS):
-			# Some mixing within bands
-			if randf() < 0.1:
-				band_color = COLORS[randi() % COLORS.size()]
 			grid_row.append(band_color)
 		grid.append(grid_row)
 
@@ -144,7 +137,7 @@ func _deal_buttons() -> void:
 
 func _make_random_button() -> Dictionary:
 	var color = COLORS[randi() % COLORS.size()]
-	var count = (randi() % 5) + 2  # 2 to 6
+	var count = (randi() % 4) + 3  # 3 to 6 - enough to clear a row
 	return {"color": color, "count": count}
 
 func _create_button_ui() -> void:
