@@ -568,17 +568,39 @@ func _draw_track() -> void:
 	if track_path.is_empty():
 		_rebuild_track_path()
 	
-	var track_color = Color(0.4, 0.4, 0.45)
+	var track_color = Color(0.45, 0.45, 0.5)
+	var track_thickness = TRACK_WIDTH
 	
-	# Draw track path
+	# Draw thick track segments like a road
 	for i in range(track_path.size()):
 		var next_i = (i + 1) % track_path.size()
-		draw_line(track_path[i], track_path[next_i], track_color, 4.0)
+		var p1 = track_path[i]
+		var p2 = track_path[next_i]
+		
+		# Draw thick line segment
+		draw_line(p1, p2, track_color, track_thickness)
+		
+		# Draw circles at corners to smooth joints
+		draw_circle(p1, track_thickness / 2, track_color)
+	
+	# Draw track edges for definition
+	var edge_color = Color(0.35, 0.35, 0.4)
+	for i in range(track_path.size()):
+		var next_i = (i + 1) % track_path.size()
+		var p1 = track_path[i]
+		var p2 = track_path[next_i]
+		var dir = (p2 - p1).normalized()
+		var perp = Vector2(-dir.y, dir.x) * (track_thickness / 2)
+		
+		# Outer edges
+		draw_line(p1 + perp, p2 + perp, edge_color, 2.0)
+		draw_line(p1 - perp, p2 - perp, edge_color, 2.0)
 	
 	# Exit indicator at bottom-right
 	if not track_path.is_empty():
 		var exit_pos = track_path[0]
-		draw_line(exit_pos, exit_pos + Vector2(30, 30), track_color, 4.0)
+		draw_line(exit_pos, exit_pos + Vector2(30, 30), track_color, track_thickness)
+		draw_circle(exit_pos + Vector2(30, 30), track_thickness / 2, track_color)
 
 func _draw_train() -> void:
 	if not train_active:
