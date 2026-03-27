@@ -241,83 +241,52 @@ func _rebuild_track_path() -> void:
 	track_path.clear()
 	track_length = 0.0
 	
-	# Build path clockwise from bottom-right
-	# Path goes around the OUTERMOST dots only
-	# When a cell is empty, the path indents inward
+	# Simple smooth rectangle path around the current bounds
+	# Path indents only at the bounds level, not per-cell
 	
-	var margin = TRACK_WIDTH / 2 + 2
+	var margin = TRACK_WIDTH / 2 + 4
 	
-	# Bottom edge (right to left)
-	var col = bound_max_col
-	while col >= bound_min_col:
-		var cell_x = grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2
-		var cell_y = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
-		
-		# Check if this cell has a dot
-		if grid[bound_max_row][col] != null:
-			# Dot present - path goes outside
-			track_path.append(Vector2(cell_x, cell_y))
-		else:
-			# Empty - path indents around it
-			# Go up, across, down
-			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y))
-			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y - CELL_SIZE))
-			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y - CELL_SIZE))
-			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y))
-		col -= 1
+	var left = grid_origin.x + bound_min_col * CELL_SIZE - margin
+	var right = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
+	var top = grid_origin.y + bound_min_row * CELL_SIZE - margin
+	var bottom = grid_origin.y + (bound_max_row + 1) * CELL_SIZE + margin
 	
-	# Left edge (bottom to top)
-	var row = bound_max_row
-	while row >= bound_min_row:
-		var cell_x = grid_origin.x + bound_min_col * CELL_SIZE - margin
-		var cell_y = grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2
-		
-		if grid[row][bound_min_col] != null:
-			track_path.append(Vector2(cell_x, cell_y))
-		else:
-			# Indent right
-			track_path.append(Vector2(cell_x, cell_y + CELL_SIZE/2))
-			track_path.append(Vector2(cell_x + CELL_SIZE, cell_y + CELL_SIZE/2))
-			track_path.append(Vector2(cell_x + CELL_SIZE, cell_y - CELL_SIZE/2))
-			track_path.append(Vector2(cell_x, cell_y - CELL_SIZE/2))
-		row -= 1
+	# Smooth rounded corners using multiple points
+	var corner_radius = 12.0
+	var corner_steps = 4
 	
-	# Top edge (left to right)
-	col = bound_min_col
-	while col <= bound_max_col:
-		var cell_x = grid_origin.x + col * CELL_SIZE + CELL_SIZE / 2
-		var cell_y = grid_origin.y + bound_min_row * CELL_SIZE - margin
-		
-		if grid[bound_min_row][col] != null:
-			track_path.append(Vector2(cell_x, cell_y))
-		else:
-			# Indent down
-			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y))
-			track_path.append(Vector2(cell_x - CELL_SIZE/2, cell_y + CELL_SIZE))
-			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y + CELL_SIZE))
-			track_path.append(Vector2(cell_x + CELL_SIZE/2, cell_y))
-		col += 1
+	# Start at bottom-right, go clockwise
+	# Bottom-right corner
+	_add_corner_points(Vector2(right, bottom), corner_radius, PI/2, 0, corner_steps)
 	
-	# Right edge (top to bottom)
-	row = bound_min_row
-	while row <= bound_max_row:
-		var cell_x = grid_origin.x + (bound_max_col + 1) * CELL_SIZE + margin
-		var cell_y = grid_origin.y + row * CELL_SIZE + CELL_SIZE / 2
-		
-		if grid[row][bound_max_col] != null:
-			track_path.append(Vector2(cell_x, cell_y))
-		else:
-			# Indent left
-			track_path.append(Vector2(cell_x, cell_y - CELL_SIZE/2))
-			track_path.append(Vector2(cell_x - CELL_SIZE, cell_y - CELL_SIZE/2))
-			track_path.append(Vector2(cell_x - CELL_SIZE, cell_y + CELL_SIZE/2))
-			track_path.append(Vector2(cell_x, cell_y + CELL_SIZE/2))
-		row += 1
+	# Right edge (bottom to top) - no intermediate points needed for straight edge
+	
+	# Top-right corner
+	_add_corner_points(Vector2(right, top), corner_radius, 0, -PI/2, corner_steps)
+	
+	# Top edge (right to left)
+	
+	# Top-left corner  
+	_add_corner_points(Vector2(left, top), corner_radius, -PI/2, -PI, corner_steps)
+	
+	# Left edge (top to bottom)
+	
+	# Bottom-left corner
+	_add_corner_points(Vector2(left, bottom), corner_radius, PI, PI/2, corner_steps)
+	
+	# Bottom edge back to start
 	
 	# Calculate total length
 	for i in range(track_path.size()):
 		var next_i = (i + 1) % track_path.size()
 		track_length += track_path[i].distance_to(track_path[next_i])
+
+func _add_corner_points(center: Vector2, radius: float, start_angle: float, end_angle: float, steps: int) -> void:
+	for i in range(steps + 1):
+		var t = float(i) / float(steps)
+		var angle = lerp(start_angle, end_angle, t)
+		var point = center + Vector2(cos(angle), sin(angle)) * radius
+		track_path.append(point)
 
 func _get_track_perimeter() -> float:
 	if track_length <= 0:
